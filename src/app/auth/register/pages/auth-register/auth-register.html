@@ -1,0 +1,117 @@
+<div class="flex flex-col min-[520px]:flex-row w-full bg-white shadow-2xl overflow-hidden rounded-sm min-h-[500px]">
+
+  <div class="hidden min-[520px]:flex min-[520px]:w-[40%] bg-[#111111] p-8 flex-col justify-between relative">
+    <div>
+      <h1 class="text-white text-3xl font-extrabold tracking-wider uppercase mb-1">Bienvenido</h1>
+      <div class="h-1 w-16 bg-blue-600 mb-6"></div>
+      <p class="text-white text-sm leading-relaxed opacity-90">
+        Descubra millones de eventos y una venta de entradas siempre segura y sencilla.
+      </p>
+    </div>
+    <div class="text-white text-5xl font-bold logo-t self-end">t</div>
+  </div>
+
+  <div class="w-full min-[520px]:w-[60%] p-6 md:p-10 bg-white flex flex-col justify-center">
+    <h2 class="text-gray-900 font-bold text-lg tracking-wide mb-2 uppercase">Registrate</h2>
+    <p class="text-gray-600 text-[14px] mb-6 leading-tight">
+      Si no tenés una cuenta, create una acá.
+    </p>
+
+    @if (errorMessage()) {
+      <div class="mb-4 bg-red-100 border-l-4 border-red-500 p-3 text-red-700 text-xs font-bold rounded-r animate-pulse">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+      <div class="mb-5 text-left">
+        <label class="block text-gray-600 text-xs mb-1 pl-1 font-semibold" for="name">Nombre completo</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          [class.border-red-600]="myForm.controls.name.invalid && myForm.controls.name.touched"
+          [class.border-gray-300]="!(myForm.controls.name.invalid && myForm.controls.name.touched)"
+          class="w-full border-2 px-3 py-3 outline-none text-gray-800 text-sm focus:border-blue-500 transition-colors rounded-sm"
+          placeholder="Tu Nombre"
+        >
+        @if (myForm.controls.name.invalid && myForm.controls.name.touched) {
+          <div class="flex items-center gap-2 mt-2">
+            <span class="text-red-600 font-bold text-xs">⚠ Ingresá un nombre válido (solo letras).</span>
+          </div>
+        }
+      </div>
+
+      <div class="mb-5 text-left">
+        <label class="block text-gray-600 text-xs mb-1 pl-1 font-semibold" for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          [class.border-red-600]="myForm.controls.email.invalid && myForm.controls.email.touched"
+          [class.border-gray-300]="!(myForm.controls.email.invalid && myForm.controls.email.touched)"
+          class="w-full border-2 px-3 py-3 outline-none text-gray-800 text-sm focus:border-blue-500 transition-colors rounded-sm"
+          placeholder="ejemplo@correo.com"
+        >
+        @if (myForm.controls.email.invalid && myForm.controls.email.touched) {
+          <div class="flex items-center gap-2 mt-2">
+            <span class="text-red-600 font-bold text-xs">⚠ Por favor, ingresá un email válido.</span>
+          </div>
+        }
+      </div>
+
+      <div class="mb-5 text-left">
+        <label class="block text-gray-600 text-xs mb-1 pl-1 font-semibold" for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          [class.border-red-600]="myForm.controls.password.invalid && myForm.controls.password.touched"
+          [class.border-gray-300]="!(myForm.controls.password.invalid && myForm.controls.password.touched)"
+          class="w-full border-2 px-3 py-3 outline-none text-gray-800 text-sm focus:border-blue-500 transition-colors rounded-sm"
+        >
+        @if (myForm.controls.password.invalid && myForm.controls.password.touched) {
+          <div class="flex items-center gap-2 mt-2">
+            <span class="text-red-600 font-bold text-xs">⚠ Mínimo 8 caracteres, 1 mayúscula y 1 número.</span>
+          </div>
+        }
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="isLoading()"
+        [class.opacity-70]="isLoading()"
+        [class.cursor-not-allowed]="isLoading()"
+        class="w-full cursor-pointer bg-blue-700 text-white font-bold py-3 rounded text-sm mb-5 hover:bg-blue-800 active:scale-[0.98] transition-all duration-200"
+      >
+        @if (isLoading()) {
+          <span class="inline-block animate-spin mr-2">⟳</span> Cargando...
+        } @else {
+          Crear cuenta
+        }
+      </button>
+    </form>
+
+    <div class="flex items-center mb-5">
+      <div class="flex-grow border-t border-gray-300"></div>
+      <span class="mx-3 text-[10px] font-bold text-gray-800 tracking-widest">O</span>
+      <div class="flex-grow border-t border-gray-300"></div>
+    </div>
+
+    <button
+      type="button"
+      routerLink="/auth/login"
+      class="w-full cursor-pointer bg-white border border-black text-black font-bold py-3 rounded flex items-center justify-center gap-2 hover:bg-gray-50 transition duration-200"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+      </svg>
+      <span class="text-sm">Iniciar sesión</span>
+    </button>
+
+    <a href="#" class="block text-center text-blue-700 font-bold text-xs mt-4 hover:underline">
+      Cómo agregar una llave de acceso
+    </a>
+  </div>
+</div>

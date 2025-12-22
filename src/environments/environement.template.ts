@@ -4,5 +4,6 @@ production: true,
   apiBookingServiceUrl: 'http://localhost:4000',
   appName: "SeatGuard Reservation Frontend",
   version: "1.0.0",
-  localStorage: "your_storage_key"
+  localStorage: "your_storage_key",
+  xInternalSecret: "ndkfjndskjnfkdjns",
 };

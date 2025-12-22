@@ -1,0 +1,33 @@
+<div>
+    <section>
+      <app-home-page></app-home-page>
+    </section>
+
+     <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+      <component-event-grid
+        [eventsResource]="eventsResource"
+      />
+    </section>
+
+    <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+     <component-event-carousel
+      title="Pop"
+      [gender]="firstGenderEvents"
+     />
+    </section>
+
+    <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+     <component-event-carousel
+      title="Rock"
+      [gender]="secondGender"
+     />
+    </section>
+
+    <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+     <component-event-carousel
+      title="Jazz"
+      [gender]="thirdGender"
+     />
+    </section>
+
+</div>

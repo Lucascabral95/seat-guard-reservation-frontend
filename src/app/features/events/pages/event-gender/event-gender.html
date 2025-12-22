@@ -1,0 +1,23 @@
+<div>
+  @if (!isValidGender()) {
+    <app-black-error
+      title="PAGE NOT FOUND"
+      message="El género solicitado no existe. Volvé a Home o probá con otro género."
+    />
+  } @else {
+    <section>
+      <hero
+      [title]="bannerHeroTitle()"
+      [description]="bannerHero.description"
+      [imageUrl]="bannerHero.imageUrl"
+  />
+    </section>
+
+    <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+         <component-event-grid
+          [eventsResource]="eventsResource"
+        />
+      </section>
+  }
+
+ </div>

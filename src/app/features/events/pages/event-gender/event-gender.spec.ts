@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import MainLayout from './main-layout';
 
-describe('MainLayout', () => {
-  let component: MainLayout;
-  let fixture: ComponentFixture<MainLayout>;
+import { EventGender } from './event-gender';
+
+describe('EventGender', () => {
+  let component: EventGender;
+  let fixture: ComponentFixture<EventGender>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainLayout]
+      imports: [EventGender]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MainLayout);
+    fixture = TestBed.createComponent(EventGender);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

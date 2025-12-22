@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EventList } from './event-list';
+import { ErrorEventCarousel } from './error-event-carousel';
 
-describe('EventList', () => {
-  let component: EventList;
-  let fixture: ComponentFixture<EventList>;
+describe('ErrorEventCarousel', () => {
+  let component: ErrorEventCarousel;
+  let fixture: ComponentFixture<ErrorEventCarousel>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EventList]
+      imports: [ErrorEventCarousel]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EventList);
+    fixture = TestBed.createComponent(ErrorEventCarousel);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

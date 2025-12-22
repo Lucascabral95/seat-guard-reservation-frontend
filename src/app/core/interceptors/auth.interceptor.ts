@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
 
 const TOKEN_LS_KEY = environment.localStorage;
+const SECRET_X_INTERNAL = environment.xInternalSecret
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);
@@ -18,7 +19,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (token) {
     const clonedRequest = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'X-Internal-Secret': SECRET_X_INTERNAL,
       }
     });
     return next(clonedRequest);

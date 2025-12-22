@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import MainLayout from './main-layout';
 
-describe('MainLayout', () => {
-  let component: MainLayout;
-  let fixture: ComponentFixture<MainLayout>;
+import { EventCarousel } from './event-carousel';
+
+describe('EventCarousel', () => {
+  let component: EventCarousel;
+  let fixture: ComponentFixture<EventCarousel>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainLayout]
+      imports: [EventCarousel]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MainLayout);
+    fixture = TestBed.createComponent(EventCarousel);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

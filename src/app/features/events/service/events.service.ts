@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { EventByIdInterface } from '../interfaces';
 import { Events } from '../interfaces/get-event-by-id.interface';
+import { FiltersEventsInterface } from '../interfaces/filter-events.interface';
 
 const URL_BOOKING_SERVICE = environment.apiBookingServiceUrl
 
@@ -32,23 +33,42 @@ export class EventsService {
 
   readonly totalEvents = computed(() => this.eventsSignal().length)
 
-  getEvents() {
-     this.isLoadingSignal.set(true)
-     this.errorMessageSignal.set(null)
+    getEventsByFilter(filtersSignal: () => (FiltersEventsInterface | undefined)) {
+    return httpResource<Events[]>(() => {
+      const filters = filtersSignal();
 
-     this.http.get<Events[]>(`${URL_BOOKING_SERVICE}/api/v1/events`).pipe(
-      tap(events => {
-        this.isLoadingSignal.set(false)
-        this.eventsSignal.set(events)
-      }),
-      catchError(error => {
-        console.error("Error al obtener los eventos", error)
-        this.errorMessageSignal.set("Error al obtener los eventos")
-        this.isLoadingSignal.set(false)
-        return throwError(() => error)
-      })
-     ).subscribe()
+      if (!filters) return undefined;
+
+      let params = new HttpParams();
+      if (filters.gender) params = params.set('gender', filters.gender);
+      if (filters.name) params = params.set('name', filters.name);
+
+      return {
+        url: `${URL_BOOKING_SERVICE}/api/v1/events`,
+        method: 'GET',
+        params
+      };
+    }, {
+      defaultValue: [],
+    });
   }
+
+ getEvents(limit?: number) {
+  return httpResource<Events[]>(() => {
+    return {
+      url: `${URL_BOOKING_SERVICE}/api/v1/events`,
+      method: 'GET'
+    };
+  }, {
+    defaultValue: [],
+    parse: (response: any) => {
+      if (!Array.isArray(response)) return [];
+
+      const data = response as Events[];
+      return limit ? data.slice(0, limit) : data;
+    }
+  });
+}
 
   getEventById(id: string): Observable<EventByIdInterface> {
    const cachedEvent = this.eventsSignal().find(event => event.id === id)

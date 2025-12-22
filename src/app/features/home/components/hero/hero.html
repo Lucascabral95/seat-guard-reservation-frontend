@@ -1,0 +1,24 @@
+<div class="relative w-full h-48 md:h-64 lg:h-[560px] overflow-hidden shadow-inner group">
+
+  <img
+    class="absolute inset-0 w-full h-full object-cover object-bottom origin-bottom transition-transform duration-700 group-hover:scale-102"
+    [src]="imageUrl"
+    alt="Concierto"
+  >
+
+  <div class="absolute inset-0 bg-black/20"></div>
+
+  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
+
+  <div class="relative z-10 h-full flex flex-col justify-end px-6 py-6 md:px-16 md:py-12">
+
+    <h2 class="text-white text-3xl md:text-5xl font-bold tracking-tight drop-shadow-lg mb-2">
+      {{ title }}
+    </h2>
+
+    <p class="text-gray-200 text-sm md:text-lg max-w-2xl font-medium drop-shadow-md leading-relaxed">
+      {{description}}
+    </p>
+
+  </div>
+</div>

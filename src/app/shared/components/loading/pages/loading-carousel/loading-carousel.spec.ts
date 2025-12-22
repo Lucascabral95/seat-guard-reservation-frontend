@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import MainLayout from './main-layout';
 
-describe('MainLayout', () => {
-  let component: MainLayout;
-  let fixture: ComponentFixture<MainLayout>;
+import { LoadingCarousel } from './loading-carousel';
+
+describe('LoadingCarousel', () => {
+  let component: LoadingCarousel;
+  let fixture: ComponentFixture<LoadingCarousel>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainLayout]
+      imports: [LoadingCarousel]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MainLayout);
+    fixture = TestBed.createComponent(LoadingCarousel);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

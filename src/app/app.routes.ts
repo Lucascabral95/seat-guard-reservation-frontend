@@ -13,7 +13,17 @@ export const routes: Routes = [
     path: "dentro",
     component: MainLayout,
     canActivate: [AuthGuard],
-    children: [ ]
+    children: [
+      {
+        path: "",
+        redirectTo: "events",
+        pathMatch: "full",
+      },
+      {
+        path: "events",
+        loadChildren: () => import('./features/events/events.routes'),
+      }
+    ]
   },
   {
     path: "",

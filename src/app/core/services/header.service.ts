@@ -17,27 +17,27 @@ export class ServiceNameService {
     readonly genders = signal<CategoryAndGendersListHeader[]>([
       {
         name: "Rock",
-        url: "/dentro/categories/conciertos",
+        url: "/dentro/events/gender/rock",
       },
       {
         name: "Pop",
-        url: "/dentro/categories/conciertos-pop",
+        url: "/dentro/events/gender/pop",
       },
       {
         name: "Jazz",
-        url: "/dentro/categories/conciertos-jazz",
+        url: "/dentro/events/gender/jazz",
       },
       {
-        name: "Electrónica",
-        url: "/dentro/categories/conciertos-jazz",
+        name: "Teatro",
+        url: "/dentro/events/gender/teatro",
       },
       {
-        name: "Clásica",
-        url: "/dentro/categories/conciertos-clasica",
+        name: "Metal",
+        url: "/dentro/events/gender/metal",
       },
       {
-        name: "DJ",
-        url: "/dentro/categories/dj",
+        name: "Varios",
+        url: "/dentro/events/gender/varios",
       },
     ]);
 

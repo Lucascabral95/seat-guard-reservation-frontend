@@ -8,6 +8,7 @@ export interface Events {
   date:         Date;
   price:        number;
   posterUrl:    string;
+  gender:       Gender;
   availability: string;
   seats:        Seat[];
 }
@@ -33,4 +34,14 @@ enum Section {
 
 enum Status {
   Available = "AVAILABLE",
+}
+
+enum Gender {
+  Electronica = "ELECTRONICA",
+  Rock = "ROCK",
+  Pop = "POP",
+  Jazz = "JAZZ",
+  Teatro = "TEATRO",
+  Metal = "METAL",
+  Varios = "VARIOS",
 }

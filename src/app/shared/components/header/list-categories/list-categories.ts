@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ServiceNameService } from '../../../../core/services/header.service';
 import { AuthLoginService } from '../../../../auth/login/service/auth-login-service';

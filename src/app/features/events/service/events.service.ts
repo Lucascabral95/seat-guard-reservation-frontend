@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
@@ -95,4 +95,16 @@ export class EventsService {
     )
   }
 
+  getEventByIdNew(idSignal: Signal<string>) {
+    return httpResource<EventByIdInterface>(() => {
+       const id = idSignal()
+
+      return {
+      url: `${URL_BOOKING_SERVICE}/api/v1/events/${id}`,
+      method: 'GET'
+    };
+    }, {
+      defaultValue: undefined
+    })
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, input, computed, PLATFORM_ID, effect } from '@angular/core';
+import { Component, inject, input, computed, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import Hero from '../../../home/components/hero/hero';
 import { EventGrid } from "../../components/event-grid/event-grid";
@@ -27,6 +27,7 @@ export default class EventGender {
    );
 
    bannerHero: BannerDataInterface = {
+    title: 'Eventos en Vivo',
      description: 'Diversión al más alto nivel asegurada.',
      imageUrl: 'https://images.unsplash.com/photo-1553101497-d1cd9d74660b?q=80&w=1170&auto=format&fit=crop'
    };

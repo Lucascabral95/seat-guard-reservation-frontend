@@ -32,15 +32,12 @@ export default class EventGender {
      imageUrl: 'https://images.unsplash.com/photo-1553101497-d1cd9d74660b?q=80&w=1170&auto=format&fit=crop'
    };
 
-
-   private eventFilters = computed(() => {
+   private eventRequest = computed(() => {
        if (!isPlatformBrowser(this.platformId)) return undefined;
        if (!this.isValidGender()) return undefined;
 
-      return {
-        gender: this.normalizedGender() as Gender
-      };
-  });
+       return { gender: this.normalizedGender() as Gender };
+   });
 
-   eventsResource = this.eventsService.getEventsByFilter(this.eventFilters);
+   eventsResource = this.eventsService.getEventsByFilter(this.eventRequest)
 }

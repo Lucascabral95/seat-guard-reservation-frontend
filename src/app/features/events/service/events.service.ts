@@ -95,6 +95,19 @@ export class EventsService {
     )
   }
 
+  getEventByIdResource(idSignal: Signal<string>) {
+    return httpResource<EventByIdInterface>(() => {
+       const url = `${URL_BOOKING_SERVICE}/api/v1/events/${idSignal()}`
+
+      return {
+     url,
+      method: "GET"
+      }
+    }, {
+      defaultValue: undefined,
+    })
+  }
+
   getEventByIdNew(idSignal: Signal<string>) {
     return httpResource<EventByIdInterface>(() => {
        const id = idSignal()

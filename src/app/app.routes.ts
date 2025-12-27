@@ -22,6 +22,10 @@ export const routes: Routes = [
       {
         path: "events",
         loadChildren: () => import('./features/events/events.routes'),
+      },
+      {
+        path: "checkout",
+        loadChildren: () => import('./features/checkout/checkout.routes'),
       }
     ]
   },

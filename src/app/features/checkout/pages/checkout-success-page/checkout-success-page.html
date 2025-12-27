@@ -1,0 +1,34 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- LOADING STATE -->
+    @if (checkoutSuccessOrderBookingResource.isLoading()) {
+      <component-loading-success></component-loading-success>
+    }
+
+    <!-- ERROR STATE -->
+    @else if (checkoutSuccessOrderBookingResource.error()) {
+      <component-error-success
+       title="No pudimos cargar tu orden"
+       description="Hubo un problema verificando el estado del pago. Por favor contacta a soporte con tu ID de orden."
+      />
+    }
+
+    <!-- SUCCESS STATE -->
+    @else if (checkoutSuccessOrderBookingResource.value(); as order) {
+
+      <!-- HEADER CONFIRMACIÓN -->
+      <component-header-confirmation
+       title="¡Pago Exitoso!"
+       description="Tu reserva ha sido confirmada y enviada a tu email."
+      />
+
+      <!-- CARD PRINCIPAL (Recibo) -->
+      <component-main-card [order]="checkoutSuccessOrderBookingResource.value()!" />
+
+      <!-- BOTONES DE ACCIÓN -->
+      <component-actions-buttons />
+
+    }
+  </div>
+</div>

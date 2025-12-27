@@ -1,0 +1,71 @@
+<div class="bg-white shadow-xl rounded-lg border border-gray-200 overflow-hidden relative">
+
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600"></div>
+
+        <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Orden ID</p>
+            <p class="font-mono text-sm text-gray-900 font-bold truncate max-w-[200px] sm:max-w-xs" title="{{ order.id }}">
+              #{{ order.id.split('-')[0] }}...
+            </p>
+          </div>
+          <div class="text-left sm:text-right">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Fecha</p>
+            <p class="text-sm font-bold text-gray-900">
+              {{ order.createdAt | date:'mediumDate' }}
+            </p>
+          </div>
+        </div>
+
+        <div class="p-8 space-y-8">
+
+          <div>
+            <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-gray-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Zm0 9.75c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+              </svg>
+              Tus Entradas ({{ order.items.length }})
+            </h3>
+
+            <div class="space-y-3">
+              @for (item of order.items; track item.id) {
+                <div class="flex items-center justify-between p-4 rounded-lg border border-gray-100 bg-gray-50/50 hover:border-blue-200 transition-colors group">
+                  <div class="flex items-center gap-4">
+                    <div class="h-10 w-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs shrink-0">
+                      {{ item.section.substring(0, 2) }}
+                    </div>
+                    <div>
+                      <p class="font-bold text-gray-900 group-hover:text-blue-700 transition-colors">{{ item.section }}</p>
+                      <p class="text-xs text-gray-500">Asiento {{ item.number }}</p>
+                    </div>
+                  </div>
+                  <p class="font-mono font-bold text-gray-900">{{ item.price | currency:'USD' }}</p>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="border-t-2 border-dashed border-gray-200 pt-6">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm text-gray-500">Estado del pago</span>
+              <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 uppercase tracking-wide">
+                {{ order.status }}
+              </span>
+            </div>
+
+            <div class="flex justify-between items-end mt-4">
+              <span class="font-bold text-gray-900 text-lg">Total Pagado</span>
+              <span class="font-black text-4xl text-gray-900 tracking-tighter">
+                {{ (order.amount / 100) | currency:'USD' }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 text-center">
+            <p class="text-xs text-gray-400">
+                Referencia de pago: {{ order.paymentProviderId }}
+            </p>
+        </div>
+      </div>

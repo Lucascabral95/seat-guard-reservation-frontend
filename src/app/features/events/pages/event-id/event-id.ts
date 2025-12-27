@@ -4,6 +4,7 @@ import { RouterLink } from "@angular/router";
 import { EventsService } from '../../service/events.service';
 import { SectionEventId } from '../../interfaces';
 import EventIdAbout from '../../components/event-id-components/event-id-about/event-id-about';
+
 @Component({
   selector: 'app-event-id',
   imports: [CommonModule, RouterLink, EventIdAbout],

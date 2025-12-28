@@ -8,6 +8,7 @@ export interface GetOrderBookingByIDInterface {
   seatIds:   string[];
   items:     Item[];
   paymentProviderId: string;
+  eventName: string;
 }
 
 export interface Item {

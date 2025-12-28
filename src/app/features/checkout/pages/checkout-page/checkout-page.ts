@@ -1,13 +1,13 @@
 import { Component, signal, computed, inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, CurrencyPipe, DatePipe, isPlatformBrowser } from '@angular/common';
+import { CommonModule, CurrencyPipe, isPlatformBrowser } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CheckoutService } from '../../service/checkout.service';
 
 @Component({
   selector: 'app-checkout-page',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, DatePipe, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, CurrencyPipe, ReactiveFormsModule],
   templateUrl: './checkout-page.html',
 })
 export default class CheckoutPage implements OnInit, OnDestroy {
@@ -32,10 +32,8 @@ export default class CheckoutPage implements OnInit, OnDestroy {
 
      console.log('ID:', id);
     }
-///////
-///////
-///////
-///////
+    ///////
+
   isLoading = signal(false);
 
   timeLeft = signal(15 * 60);

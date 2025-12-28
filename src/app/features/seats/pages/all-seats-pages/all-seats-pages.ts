@@ -105,7 +105,7 @@ export default class AllSeatsPages {
   }
 
   getData() {
-    const userId = this.authService.getToken();
+    const userId = this.authService.getPayloadJWT()?.id;
     const selectedIds = [...this.selectedSeatIds()];
 
     this.isLoadingReservation.set(true)

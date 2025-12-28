@@ -1,0 +1,47 @@
+<div class="bg-white border border-gray-200 rounded-sm shadow-sm overflow-hidden">
+
+      <div class="p-6 border-b border-gray-100">
+        <h2 class="text-lg font-black uppercase tracking-wide text-gray-900">
+          Asientos
+        </h2>
+      </div>
+
+      <div class="divide-y divide-gray-100">
+        @for (seat of order.items; track seat.id) {
+          <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+            <div>
+              <p class="font-black text-gray-900 text-lg">
+                {{ seat.section }} · {{ seat.number }}
+              </p>
+              <p class="text-xs text-gray-500">
+                Comprado el {{ seat.updatedAt | date:'dd MMM yyyy • HH:mm' }}
+              </p>
+            </div>
+
+            <div class="flex items-center gap-6">
+              <div class="text-right">
+                <p class="font-bold text-gray-900">
+                  {{ seat.price | currency:'USD' }}
+                </p>
+                <p class="text-[10px] uppercase text-gray-400">
+                  {{ seat.status }}
+                </p>
+              </div>
+
+              <span
+                class="text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full"
+                [class.bg-emerald-100]="seat.status === 'sold'"
+                [class.text-emerald-700]="seat.status === 'sold'"
+                [class.bg-yellow-100]="seat.status === 'reserved'"
+                [class.text-yellow-700]="seat.status === 'reserved'"
+              >
+                {{ seat.status }}
+              </span>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>

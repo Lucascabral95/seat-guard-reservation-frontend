@@ -26,6 +26,10 @@ export const routes: Routes = [
       {
         path: "checkout",
         loadChildren: () => import('./features/checkout/checkout.routes'),
+      },
+      {
+        path: "my-tickets",
+        loadChildren: () => import('./features/my-tickets/my-tickets.routes'),
       }
     ]
   },

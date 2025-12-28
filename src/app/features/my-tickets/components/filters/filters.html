@@ -1,0 +1,36 @@
+<div class="flex flex-wrap gap-2 mb-8">
+
+  <button
+    (click)="setFilter('all')"
+    [class.bg-gray-900]="selectedStatus() === 'all'"
+    [class.text-white]="selectedStatus() === 'all'"
+    class="px-4 py-2 text-xs font-bold uppercase rounded-sm border cursor-pointer transition-colors hover:bg-gray-800 hover:text-white"
+  >
+    Todos
+  </button>
+
+  <button
+    (click)="setFilter(BuyStatus.COMPLETED)"
+    [class.bg-emerald-600]="selectedStatus() === BuyStatus.COMPLETED"
+    class="px-4 py-2 text-xs font-bold uppercase rounded-sm border cursor-pointer transition-colors duration-200 hover:bg-emerald-700"
+  >
+    Completadas
+  </button>
+
+  <button
+    (click)="setFilter(BuyStatus.PENDING)"
+    [class.bg-yellow-500]="selectedStatus() === BuyStatus.PENDING"
+    class="px-4 py-2 text-xs font-bold uppercase rounded-sm border cursor-pointer transition-colors duration-200 hover:bg-yellow-600"
+  >
+    Pendientes
+  </button>
+
+  <button
+    (click)="setFilter(BuyStatus.FAILED)"
+    [class.bg-red-600]="selectedStatus() === BuyStatus.FAILED"
+    class="px-4 py-2 text-xs font-bold uppercase rounded-sm border cursor-pointer transition-colors duration-200 hover:bg-red-700"
+  >
+    Fallidas
+  </button>
+
+</div>

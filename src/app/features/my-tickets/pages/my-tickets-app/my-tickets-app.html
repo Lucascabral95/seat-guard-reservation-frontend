@@ -1,0 +1,32 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- HEADER -->
+  <component-header-my-tickets />
+
+  <!-- FILTER -->
+   <component-filters-my-tickets
+     [selectedStatus]="selectedStatus"
+     (filterChange)="onFilterChange($event)"
+   />
+
+  <!-- LOADING -->
+  @if (myTicketsResource.isLoading()) {
+    <component-loading-my-tickets />
+  }
+
+  <!-- ERROR -->
+  @else if (myTicketsResource.error()) {
+    <component-my-tickets-error [retry]="myTicketsResource.reload" />
+  }
+
+  <!-- EMPTY -->
+  @else if (myTicketsResource.value().length === 0) {
+    <component-my-tickets-empty />
+  }
+
+  <!-- LIST -->
+  @else {
+   <component-list-my-tickets [myTicketsResource]="filteredTickets()" />
+  }
+
+</div>

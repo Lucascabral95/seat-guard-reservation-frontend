@@ -1,0 +1,45 @@
+<div class="bg-white border border-gray-200 rounded-sm shadow-sm overflow-hidden mb-8">
+
+      <div class="p-6 border-b border-gray-100 flex justify-between items-start">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-gray-400 mb-1">
+            Compra
+          </p>
+          <p class="font-bold text-gray-900">
+            {{ order.createdAt | date:'dd MMM yyyy • HH:mm' }}
+          </p>
+        </div>
+
+        <span
+          class="text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full"
+          [class.bg-yellow-100]="order.status === 'pending'"
+          [class.text-yellow-700]="order.status === 'pending'"
+          [class.bg-emerald-100]="order.status === 'completed'"
+          [class.text-emerald-700]="order.status === 'completed'"
+          [class.bg-red-100]="order.status === 'failed'"
+          [class.text-red-700]="order.status === 'failed'"
+        >
+          {{ order.status }}
+        </span>
+      </div>
+
+      <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+        <div>
+          <p class="text-xs text-gray-400 uppercase mb-1">Total pagado</p>
+          <p class="text-2xl font-black text-gray-900">
+            {{ order.amount | currency:'USD' }}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-xs text-gray-400 uppercase mb-1">Proveedor de pago</p>
+          <p class="text-sm font-medium text-gray-900 break-all"
+          [class.text-red-600]="!order.paymentProviderId"
+          >
+            {{ order.paymentProviderId || "Pago aún no realizado" }}
+          </p>
+        </div>
+
+      </div>
+    </div>

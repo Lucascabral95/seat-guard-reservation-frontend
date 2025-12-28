@@ -3,7 +3,7 @@
 
     <!-- HEADER SIMPLE -->
     <div class="mb-8 flex items-center justify-between">
-      <h1 class="text-3xl font-black text-gray-900 tracking-tight uppercase">Checkout</h1>
+      <h1 class="text-3xl font-black text-gray-900 tracking-tight uppercase">Checkout {{ checkoutResoursByID.value()?.eventName || 'Evento' }} </h1>
 
       <!-- TIMER FLOTANTE (STICKY EN MÓVIL) -->
       <div class="fixed bottom-4 right-4 z-50 md:static md:block shadow-2xl md:shadow-none">

@@ -1,0 +1,47 @@
+<div class="bg-white shadow-xl rounded-lg border border-gray-200 overflow-hidden relative">
+
+      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-400 via-amber-400 to-gray-400"></div>
+
+      <div class="p-8 text-center space-y-6">
+
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-50 text-amber-600 mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+          </svg>
+        </div>
+
+        <div>
+          <h1 class="text-2xl font-black text-gray-900 tracking-tight mb-2">
+            El proceso se detuvo
+          </h1>
+          <p class="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
+            No se ha realizado ningún cargo a tu tarjeta. Es posible que hayas cancelado la operación o que la sesión haya expirado.
+          </p>
+        </div>
+
+        <div class="bg-gray-50 rounded-md border border-gray-100 p-4 text-left flex gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 text-gray-400 shrink-0 mt-0.5">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd" />
+          </svg>
+          <p class="text-xs text-gray-500">
+            Tus asientos podrían liberarse pronto si no completas la reserva.
+          </p>
+        </div>
+
+        <div class="pt-2 space-y-3">
+          <a routerLink="/dentro" class="block w-full py-3 bg-gray-900 text-white font-bold rounded-md hover:bg-gray-800 transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm cursor-pointer">
+            Volver al inicio
+          </a>
+
+          <a routerLink="/dentro" class="block w-full py-3 text-gray-500 font-semibold hover:text-gray-800 transition text-sm cursor-pointer">
+            Cancelar y buscar otro evento
+          </a>
+        </div>
+
+      </div>
+
+      <div class="bg-gray-50 px-6 py-3 border-t border-gray-200 flex justify-center items-center gap-2 opacity-60">
+        <svg class="h-4" viewBox="0 0 38 24" fill="none"><path fill="#1f2937" d="M35 12L38 12L38 24L35 24L35 12Z"/></svg>
+        <span class="text-[10px] font-mono text-gray-400">PAGO SEGURO</span>
+      </div>
+    </div>

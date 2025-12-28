@@ -3,10 +3,19 @@ import { Router, RouterLink } from '@angular/router';
 import { ServiceNameService } from '../../../../core/services/header.service';
 import { AuthLoginService } from '../../../../auth/login/service/auth-login-service';
 import SearchEvent from '../search-event/search-event';
+import MenuOpenComponent from './menu-open-component/menu-open-component';
+import UtilityBarComponent from './utility-bar-component/utility-bar-component';
+import NavBarComponent from './nav-bar-component/nav-bar-component';
 
 @Component({
   selector: 'list-categories',
-  imports: [RouterLink, SearchEvent],
+  imports: [
+    RouterLink,
+    SearchEvent,
+    MenuOpenComponent,
+    UtilityBarComponent,
+    NavBarComponent,
+  ],
   templateUrl: './list-categories.html',
   styleUrl: './list-categories.scss',
 })

@@ -6,7 +6,8 @@ export interface GetSeatByIDInterface {
   number:    string;
   price:     number;
   status:    string;
-  lockedBy:  null;
-  lockedAt:  null;
+  lockedBy:  null | string;
+  lockedAt:  null | Date;
   eventId:   string;
+  eventName: string;
 }

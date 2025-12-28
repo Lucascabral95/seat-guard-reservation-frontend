@@ -60,7 +60,7 @@
           </article>
         }
 
-        @if (!eventsResource.isLoading() && eventsResource.value()?.length === 0) {
+        @if (!eventsResource.isLoading() && eventsResource.value().length === 0) {
            <component-loading-carousel />
         }
 

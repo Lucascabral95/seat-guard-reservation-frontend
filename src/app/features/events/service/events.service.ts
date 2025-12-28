@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams, httpResource } from '@angular/common/http';
-import { computed, inject, Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, PLATFORM_ID, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { EventByIdInterface } from '../interfaces';
 import { Events } from '../interfaces/get-event-by-id.interface';
 import { FiltersEventsInterface } from '../interfaces/filter-events.interface';
+import { isPlatformBrowser } from '@angular/common';
 
 const URL_BOOKING_SERVICE = environment.apiBookingServiceUrl
 
@@ -13,6 +14,8 @@ const URL_BOOKING_SERVICE = environment.apiBookingServiceUrl
 export class EventsService {
   http = inject(HttpClient)
   router = inject(Router)
+  private platformId = inject(PLATFORM_ID);
+  isBrowser = isPlatformBrowser(this.platformId);
 
   // Privates signals
   private eventsSignal = signal<Events[]>([])
@@ -33,32 +36,42 @@ export class EventsService {
 
   readonly totalEvents = computed(() => this.eventsSignal().length)
 
-    getEventsByFilter(filtersSignal: () => (FiltersEventsInterface | undefined)) {
-    return httpResource<Events[]>(() => {
-      const filters = filtersSignal();
-
-      if (!filters) return undefined;
-
-      let params = new HttpParams();
-      if (filters.gender) params = params.set('gender', filters.gender);
-      if (filters.name) params = params.set('name', filters.name);
-
-      return {
-        url: `${URL_BOOKING_SERVICE}/api/v1/events`,
-        method: 'GET',
-        params
-      };
-    }, {
-      defaultValue: [],
-    });
-  }
-
- getEvents(limit?: number) {
+  getEventsByFilter(filtersSignal: () => FiltersEventsInterface | undefined) {
   return httpResource<Events[]>(() => {
+
+    if (!this.isBrowser) {
+      return undefined;
+    }
+
+    const filters = filtersSignal();
+
+    let params = new HttpParams();
+    if (filters?.gender) params = params.set('gender', filters.gender);
+    if (filters?.name) params = params.set('name', filters.name);
+
+    return {
+      url: `${URL_BOOKING_SERVICE}/api/v1/events`,
+      method: 'GET',
+      params
+    };
+
+  }, {
+    defaultValue: [],
+  });
+}
+
+getEvents(limit?: number) {
+  return httpResource<Events[]>(() => {
+
+    if (!this.isBrowser) {
+      return undefined;
+    }
+
     return {
       url: `${URL_BOOKING_SERVICE}/api/v1/events`,
       method: 'GET'
     };
+
   }, {
     defaultValue: [],
     parse: (response: any) => {

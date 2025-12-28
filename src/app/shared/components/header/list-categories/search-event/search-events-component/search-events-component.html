@@ -1,0 +1,50 @@
+@if (visible) {
+
+  @if (resource.isLoading()) {
+    <div class="absolute left-0 right-0 mt-2 bg-white rounded-md shadow-xl p-4 z-50">
+      <p class="text-sm text-gray-500 animate-pulse">
+        Buscando eventos…
+      </p>
+    </div>
+  }
+
+  @else if (resource.value().length > 0) {
+    <div
+      class="absolute left-0 right-0 mt-2 bg-white rounded-md
+             shadow-xl z-50 max-h-96 overflow-y-auto"
+    >
+      @for (event of resource.value(); track event.id) {
+        <a
+          [routerLink]="'/dentro/events/id/' + event.id"
+          (click)="onSelect()"
+          class="flex gap-4 px-5 py-4 hover:bg-gray-50 transition"
+        >
+          <img
+            [src]="event.posterUrl"
+            class="w-14 h-20 object-cover rounded-md bg-gray-100"
+          />
+
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-gray-900 truncate">
+              {{ event.name }}
+            </p>
+            <p class="text-sm text-gray-500 truncate">
+              {{ event.location }}
+            </p>
+            <p class="text-xs text-gray-400">
+              {{ event.date | date:'dd MMM yyyy' }}
+            </p>
+          </div>
+        </a>
+      }
+    </div>
+  }
+
+  @else {
+    <div class="absolute left-0 right-0 mt-2 bg-white rounded-md shadow-xl p-4 z-50">
+      <p class="text-sm text-gray-500">
+        No se encontraron eventos
+      </p>
+    </div>
+  }
+}

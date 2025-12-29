@@ -1,11 +1,9 @@
 <div class="min-h-screen bg-gray-50 py-12">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- HEADER SIMPLE -->
     <div class="mb-8 flex items-center justify-between">
       <h1 class="text-3xl font-black text-gray-900 tracking-tight uppercase">Checkout {{ checkoutResoursByID.value()?.eventName || 'Evento' }} </h1>
 
-      <!-- TIMER FLOTANTE (STICKY EN MÓVIL) -->
       <div class="fixed bottom-4 right-4 z-50 md:static md:block shadow-2xl md:shadow-none">
         <div
           class="flex items-center gap-3 bg-gray-900 text-white px-5 py-3 rounded-full md:rounded-lg font-mono font-bold text-lg transition-colors duration-300"
@@ -22,10 +20,8 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
-      <!-- COLUMNA IZQUIERDA: FORMULARIOS -->
       <div class="lg:col-span-7 space-y-8">
 
-        <!-- Alerta de Seguridad -->
         <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-md">
           <div class="flex">
             <div class="flex-shrink-0">
@@ -42,119 +38,19 @@
         </div>
 
         <!-- Card: Datos del Comprador -->
-        <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-black text-white text-xs">1</span>
-              Datos de Contacto
-            </h2>
-          </div>
-
-          <div class="p-6">
-            <form [formGroup]="checkoutForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-              <!-- Nombre -->
-              <div class="space-y-1">
-                <label class="block text-sm font-medium text-gray-700">Nombre</label>
-                <input
-                  type="text"
-                  formControlName="firstName"
-                  class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                  [class.border-red-300]="checkoutForm.get('firstName')?.invalid && checkoutForm.get('firstName')?.touched"
-                >
-                @if (checkoutForm.get('firstName')?.invalid && checkoutForm.get('firstName')?.touched) {
-                  <p class="text-red-500 text-xs">El nombre es requerido</p>
-                }
-              </div>
-
-              <!-- Apellido -->
-              <div class="space-y-1">
-                <label class="block text-sm font-medium text-gray-700">Apellido</label>
-                <input
-                  type="text"
-                  formControlName="lastName"
-                  class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                  [class.border-red-300]="checkoutForm.get('lastName')?.invalid && checkoutForm.get('lastName')?.touched"
-                >
-              </div>
-
-              <!-- Email -->
-              <div class="space-y-1 md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700">Email (donde recibirás tus tickets)</label>
-                <input
-                  type="email"
-                  formControlName="email"
-                  placeholder="ejemplo@correo.com"
-                  class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                  [class.border-red-300]="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched"
-                >
-              </div>
-
-              <!-- Confirmar Email -->
-              <div class="space-y-1 md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700">Confirmar Email</label>
-                <input
-                  type="email"
-                  formControlName="confirmEmail"
-                  class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                  [class.border-red-300]="checkoutForm.get('confirmEmail')?.invalid && checkoutForm.get('confirmEmail')?.touched"
-                >
-              </div>
-
-            </form>
-          </div>
-        </div>
+        <component-data-customer></component-data-customer>
 
         <!-- Método de entrega (Estático por ahora) -->
-        <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden opacity-75">
-          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <span class="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 text-white text-xs">2</span>
-              Método de Entrega
-            </h2>
-          </div>
-          <div class="p-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-gray-600">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-              </svg>
-              <div>
-                <p class="font-bold text-gray-900">E-Ticket (Móvil)</p>
-                <p class="text-xs text-gray-500">Gratis • Envío inmediato</p>
-              </div>
-            </div>
-            <div class="text-blue-600">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <component-send-method></component-send-method>
 
       </div>
 
       <!-- COLUMNA DERECHA: RESUMEN (Sticky) -->
-      <div class="lg:col-span-5">
+     <div class="lg:col-span-5">
         <div class="bg-white shadow-xl rounded-lg border border-gray-200 sticky top-6 overflow-hidden">
-
-          <!-- Imagen del Evento (Header del Resumen) -->
-          <!-- <div class="h-32 bg-gray-900 relative overflow-hidden">
-             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-             <div class="absolute bottom-4 left-4 z-20 text-white">
-               <h3 class="font-bold text-lg leading-tight">{{ cartItems()[0].eventName }}</h3>
-               <p class="text-xs text-gray-300 flex items-center gap-1 mt-1">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3">
-                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                 </svg>
-                 {{ cartItems()[0].location }}
-               </p>
-             </div>
-          </div> -->
 
           <div class="p-6 space-y-6">
 
-            <!-- Lista de Tickets -->
             <div class="space-y-4">
               <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Tus Entradas</h4>
 
@@ -169,7 +65,6 @@
               }
             </div>
 
-            <!-- Desglose de Precios -->
             <div class="bg-gray-50 -mx-6 px-6 py-4 space-y-2 border-y border-gray-100">
               <div class="flex justify-between text-sm text-gray-600">
                 <span>Subtotal ({{ checkoutResoursByID.value()?.items?.length }} entrada/s)</span>
@@ -181,39 +76,41 @@
               </div>
             </div>
 
-            <!-- Total -->
             <div class="flex justify-between items-end">
               <span class="font-bold text-gray-900 text-lg">Total</span>
               <span class="font-black text-3xl text-gray-900 tracking-tighter">{{ (checkoutResoursByID.value()?.amount! / 100) | currency:'USD' }}</span>
             </div>
 
-            <!-- Terms Checkbox -->
             <div class="flex items-start gap-2 pt-2">
               <input
                 type="checkbox"
                 id="terms"
-                [formControl]="checkoutForm.controls.termsAccepted"
                 class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              >
+                [checked]="termsAccepted()"
+                (change)="termsAccepted.set($event.target.checked)"
+                 >
+
               <label for="terms" class="text-xs text-gray-500 leading-snug">
                 He leído y acepto los <a href="#" class="text-blue-600 hover:underline">términos de servicio</a> y la política de privacidad. Entiendo que las ventas son finales.
               </label>
             </div>
 
-            <!-- Botón de Pago -->
             <button
-              (click)="processPayment()"
-              [disabled]="isLoading() || checkoutForm.invalid"
-              class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 rounded-md shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
-            >
+               (click)="processPayment()"
+               [disabled]="isLoading() || !termsAccepted()"
+               class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed
+                      text-white font-bold py-4 rounded-md shadow-lg hover:shadow-xl transition-all
+                      transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
+>
+
               @if (isLoading()) {
-                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Procesando...
+               <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+              Redirigiendo a Stripe…
               } @else {
-                Pagar {{ (checkoutResoursByID.value()?.amount! / 100) | currency:'USD' }}
+                Continuar a pago seguro
               }
             </button>
 

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MyTicketsService } from '../../service/my-tickets.service';
 import { isPlatformBrowser } from '@angular/common';
@@ -7,21 +7,33 @@ import MyTicketsError from '../../components/error/error';
 import MyTicketLoading from '../../components/loading/my-ticket-loading/my-ticket-loading';
 import OrderCardMyTicket from '../../components/cards/order-card-my-ticket/order-card-my-ticket';
 import SeatsMyTicket from '../../components/seats/seats';
+import { CheckoutService } from '../../../checkout/service/checkout.service';
+import DataCustomerComponent from '../../components/data-customer-component/data-customer-component';
 
 @Component({
   selector: 'app-my-ticket-app',
-  imports: [CommonModule, MyTicketsError, RouterLink, MyTicketLoading, OrderCardMyTicket, SeatsMyTicket],
+  imports: [
+    CommonModule,
+    MyTicketsError,
+    RouterLink,
+    MyTicketLoading,
+     OrderCardMyTicket,
+     SeatsMyTicket,
+    DataCustomerComponent,
+    ],
   templateUrl: './my-ticket-app.html',
   styleUrl: './my-ticket-app.scss',
 })
 export default class MyTicketApp implements OnInit {
-  private route = inject(ActivatedRoute);
+    private route = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
 
   private myTicketService = inject(MyTicketsService);
+  private checkoutService = inject(CheckoutService);
 
   id = signal<string | null>(null);
+  orderId = signal<string | null>(null);
 
   ngOnInit() {
     if (this.isBrowser) {
@@ -32,4 +44,18 @@ export default class MyTicketApp implements OnInit {
   myTicketById = this.myTicketService.getMyTicketById(
     () => this.id()!
   );
+
+  constructor() {
+    effect(() => {
+      const order = this.myTicketById.value();
+      if (order?.id) {
+        this.orderId.set(order.id);
+      }
+    });
+  }
+
+  dataCustomerResource = this.checkoutService.getDataCustomerByOrderID(
+  () => this.orderId()!
+);
+
 }

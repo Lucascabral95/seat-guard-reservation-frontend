@@ -11,7 +11,14 @@ import HeaderConfirmation from '../../components/header-confirmation/header-conf
 @Component({
   selector: 'app-checkout-success-page',
   standalone: true,
-  imports: [CommonModule, LoadingSuccessPage, ComponentErrorSuccess, MainCard, ComponentActionsButtons, HeaderConfirmation],
+  imports: [
+    CommonModule,
+    LoadingSuccessPage,
+    ComponentErrorSuccess,
+    MainCard,
+    ComponentActionsButtons,
+    HeaderConfirmation,
+  ],
   templateUrl: './checkout-success-page.html',
   styles: ``
 })

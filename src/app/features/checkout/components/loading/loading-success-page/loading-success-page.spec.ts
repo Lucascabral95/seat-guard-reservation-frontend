@@ -1,23 +1,30 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import 'zone.js';
+import 'zone.js/testing';
 
-import { LoadingSuccessPage } from './loading-success-page';
+import { TestBed } from '@angular/core/testing';
+import LoadingSuccessPage from './loading-success-page';
 
 describe('LoadingSuccessPage', () => {
-  let component: LoadingSuccessPage;
-  let fixture: ComponentFixture<LoadingSuccessPage>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoadingSuccessPage]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(LoadingSuccessPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [LoadingSuccessPage],
+    }).compileComponents();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create the component', () => {
+    const fixture = TestBed.createComponent(LoadingSuccessPage);
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should render loading skeleton', () => {
+    const fixture = TestBed.createComponent(LoadingSuccessPage);
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+
+    expect(el.querySelector('div')).toBeTruthy();
+
+    const blocks = el.querySelectorAll('div div');
+    expect(blocks.length).toBeGreaterThan(0);
   });
 });

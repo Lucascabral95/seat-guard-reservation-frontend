@@ -1,23 +1,43 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import 'zone.js';
+import 'zone.js/testing';
 
-import { EventGender } from './event-gender';
+import { TestBed } from '@angular/core/testing';
+import EventGender from './event-gender';
+import { EventsService } from '../../service/events.service';
+import { Gender } from '../../interfaces/filter-events.interface';
+import { provideRouter } from '@angular/router';
+import { createResourceMock } from '../../../../shared/testing/testing-utils';
 
 describe('EventGender', () => {
-  let component: EventGender;
-  let fixture: ComponentFixture<EventGender>;
+  let serviceMock: any;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [EventGender]
-    })
-    .compileComponents();
+    serviceMock = {
+      getEventsByFilter: jasmine.createSpy().and.returnValue(createResourceMock<{gender: Gender}>()),
+    };
 
-    fixture = TestBed.createComponent(EventGender);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    await TestBed.configureTestingModule({
+      imports: [EventGender],
+      providers: [
+        provideRouter([]),
+        { provide: EventsService, useValue: serviceMock },
+      ],
+    }).compileComponents();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create the component', () => {
+    const fixture = TestBed.createComponent(EventGender);
+    fixture.componentRef.setInput('gender', Gender.Rock);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should call getEventsByFilter when gender is valid', () => {
+    const fixture = TestBed.createComponent(EventGender);
+    fixture.componentRef.setInput('gender', Gender.Rock);
+    fixture.detectChanges();
+
+    expect(serviceMock.getEventsByFilter).toHaveBeenCalled();
   });
 });

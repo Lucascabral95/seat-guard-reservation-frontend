@@ -1,23 +1,34 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import 'zone.js';
+import 'zone.js/testing';
 
-import { Loading } from './loading';
+import { TestBed } from '@angular/core/testing';
+import LoadingMyTickets from './loading';
 
-describe('Loading', () => {
-  let component: Loading;
-  let fixture: ComponentFixture<Loading>;
-
+describe('LoadingMyTickets', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Loading]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(Loading);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [LoadingMyTickets],
+    }).compileComponents();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const fixture = TestBed.createComponent(LoadingMyTickets);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should render loading skeletons', () => {
+    const fixture = TestBed.createComponent(LoadingMyTickets);
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+
+    // skeleton grid
+    expect(el.querySelector('.animate-pulse')).toBeTruthy();
+
+    // 6 cards
+    const cards = el.querySelectorAll('.border');
+    expect(cards.length).toBe(6);
   });
 });

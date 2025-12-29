@@ -1,23 +1,39 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import 'zone.js';
+import 'zone.js/testing';
 
-import { Filters } from './filters';
+import { TestBed } from '@angular/core/testing';
+import FiltersMyTickets from './filters';
+import { signal } from '@angular/core';
+import { BuyStatus } from '../../interfaces';
 
-describe('Filters', () => {
-  let component: Filters;
-  let fixture: ComponentFixture<Filters>;
-
+describe('FiltersMyTickets', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Filters]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(Filters);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [FiltersMyTickets],
+    }).compileComponents();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const fixture = TestBed.createComponent(FiltersMyTickets);
+    fixture.componentInstance.selectedStatus = signal('all');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should emit filterChange when clicking button', () => {
+    const fixture = TestBed.createComponent(FiltersMyTickets);
+    const component = fixture.componentInstance;
+
+    component.selectedStatus = signal('all');
+    spyOn(component.filterChange, 'emit');
+
+    fixture.detectChanges();
+
+    component.setFilter(BuyStatus.COMPLETED);
+
+    expect(component.filterChange.emit).toHaveBeenCalledWith(
+      BuyStatus.COMPLETED
+    );
   });
 });

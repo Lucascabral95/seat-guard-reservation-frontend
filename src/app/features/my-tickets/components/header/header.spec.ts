@@ -1,23 +1,42 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import 'zone.js';
+import 'zone.js/testing';
 
-import { Header } from './header';
+import { TestBed } from '@angular/core/testing';
+import HeaderMyTickets from './header';
 
-describe('Header', () => {
-  let component: Header;
-  let fixture: ComponentFixture<Header>;
-
+describe('HeaderMyTickets', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Header]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(Header);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [HeaderMyTickets],
+    }).compileComponents();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const fixture = TestBed.createComponent(HeaderMyTickets);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should render default title and caption', () => {
+    const fixture = TestBed.createComponent(HeaderMyTickets);
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+
+    expect(el.textContent).toContain('Mis Tickets');
+    expect(el.textContent).toContain('Historial de compras');
+  });
+
+  it('should render custom title and caption', () => {
+    const fixture = TestBed.createComponent(HeaderMyTickets);
+    fixture.componentInstance.title = 'Compras';
+    fixture.componentInstance.caption = 'Listado';
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+
+    expect(el.textContent).toContain('Compras');
+    expect(el.textContent).toContain('Listado');
   });
 });

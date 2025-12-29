@@ -1,23 +1,60 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import 'zone.js';
+import 'zone.js/testing';
 
-import { EventId } from './event-id';
+import { TestBed } from '@angular/core/testing';
+import EventId from './event-id';
+import { EventsService } from '../../service/events.service';
+import { provideRouter } from '@angular/router';
+import { createResourceMock } from '../../../../shared/testing/testing-utils';
+import { SectionEventId } from '../../interfaces';
 
 describe('EventId', () => {
-  let component: EventId;
-  let fixture: ComponentFixture<EventId>;
+  let serviceMock: any;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [EventId]
-    })
-    .compileComponents();
+    serviceMock = {
+      getEventByIdNew: jasmine.createSpy().and.returnValue(
+        createResourceMock({ loading: true })
+      ),
+    };
 
-    fixture = TestBed.createComponent(EventId);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    await TestBed.configureTestingModule({
+      imports: [EventId],
+      providers: [
+        provideRouter([]), // 🔴 CLAVE
+        { provide: EventsService, useValue: serviceMock },
+      ],
+    }).compileComponents();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const fixture = TestBed.createComponent(EventId);
+    fixture.componentRef.setInput('id', 'event-1');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should render loading state', () => {
+    serviceMock.getEventByIdNew.and.returnValue(
+      createResourceMock({ loading: true })
+    );
+
+    const fixture = TestBed.createComponent(EventId);
+    fixture.componentRef.setInput('id', 'event-1');
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.innerHTML).toContain('animate-pulse');
+  });
+
+  it('should change section when calling changeSectionEventId', () => {
+    const fixture = TestBed.createComponent(EventId);
+    fixture.componentRef.setInput('id', 'event-1');
+    fixture.detectChanges();
+
+    fixture.componentInstance.changeSectionEventId(SectionEventId.about);
+
+    expect(fixture.componentInstance.sectionEventId()).toBe(SectionEventId.about);
   });
 });

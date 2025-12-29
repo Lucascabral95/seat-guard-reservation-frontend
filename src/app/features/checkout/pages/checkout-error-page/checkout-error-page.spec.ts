@@ -1,23 +1,30 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import 'zone.js';
+import 'zone.js/testing';
 
-import { CheckoutErrorPage } from './checkout-error-page';
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import CheckoutErrorPage from './checkout-error-page';
 
 describe('CheckoutErrorPage', () => {
-  let component: CheckoutErrorPage;
-  let fixture: ComponentFixture<CheckoutErrorPage>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutErrorPage]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(CheckoutErrorPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [
+        CheckoutErrorPage,
+        RouterTestingModule,
+      ],
+    }).compileComponents();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create the page', () => {
+    const fixture = TestBed.createComponent(CheckoutErrorPage);
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should render main cancel card', () => {
+    const fixture = TestBed.createComponent(CheckoutErrorPage);
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('component-main-card-cancel')).toBeTruthy();
   });
 });

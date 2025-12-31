@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CheckoutService } from '../../service/checkout.service';
 import LoadingSuccessPage from '../../components/loading/loading-success-page/loading-success-page';
@@ -7,6 +7,8 @@ import ComponentErrorSuccess from '../../components/errors/component-error-succe
 import MainCard from '../../components/main-card/main-card';
 import ComponentActionsButtons from '../../components/actions-buttons/component-actions-buttons/component-actions-buttons';
 import HeaderConfirmation from '../../components/header-confirmation/header-confirmation';
+import { openPdf } from '../../../../shared/utils/open-pdf.utils';
+import { PdfService } from '../../../my-tickets/service/pdf.service';
 
 @Component({
   selector: 'app-checkout-success-page',
@@ -27,6 +29,7 @@ export default class CheckoutSuccessPage {
     private isBrowser = isPlatformBrowser(this.platformId);
     private serviceCheckout = inject(CheckoutService);
     private route = inject(ActivatedRoute);
+    private pdfService = inject(PdfService);
 
     order_id = this.route.snapshot.queryParamMap.get('order_id');
 
@@ -37,4 +40,17 @@ export default class CheckoutSuccessPage {
            console.log(`Procesando orden: ${this.order_id}`);
         }
     }
+
+    isLoadingPdf = signal<boolean>(false);
+pdfError = signal<string | null>(null);
+
+    openTicket() {
+  openPdf({
+    orderId: this.order_id,
+    download$: (id) => this.pdfService.downloadTicket(id),
+    setLoading: (v) => this.isLoadingPdf.set(v),
+    setError: (v) => this.pdfError.set(v)
+  });
+}
+
 }

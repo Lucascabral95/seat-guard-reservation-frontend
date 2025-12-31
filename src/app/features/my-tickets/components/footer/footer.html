@@ -1,0 +1,52 @@
+<div class="mt-8 flex flex-col gap-4">
+
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+    <a
+      routerLink="/dentro/my-tickets"
+      class="text-sm font-bold uppercase tracking-wide text-gray-500 hover:text-gray-900 transition cursor-pointer"
+    >
+      ← Volver a mis tickets
+    </a>
+
+    <div class="flex items-center gap-4">
+
+      <span class="text-xs text-gray-400 hidden sm:block">
+        Orden ID · {{ order.id }}
+      </span>
+
+      <button
+        (click)="openTicket()"
+        [disabled]="isLoadingPdf()"
+        class="flex items-center gap-2 px-5 py-2.5
+               bg-gray-900 text-white text-sm font-bold uppercase tracking-wide
+               rounded-md
+               hover:bg-gray-800
+               disabled:bg-gray-400
+               transition
+               cursor-pointer
+               ">
+
+        @if (isLoadingPdf()) {
+          <span class="animate-spin">⏳</span>
+          <span>Abriendo…</span>
+        } @else {
+          <span>🎫</span>
+          <span>Ver ticket</span>
+        }
+      </button>
+
+    </div>
+  </div>
+
+  <div class="sm:hidden text-xs text-gray-400 truncate">
+    Orden ID · {{ order.id }}
+  </div>
+
+</div>
+
+@if (pdfError()) {
+  <p class="text-red-500 mt-2 text-sm text-right">
+    {{ pdfError() }}
+  </p>
+}

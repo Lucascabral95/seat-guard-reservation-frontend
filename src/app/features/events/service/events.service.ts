@@ -48,6 +48,7 @@ export class EventsService {
     let params = new HttpParams();
     if (filters?.gender) params = params.set('gender', filters.gender);
     if (filters?.name) params = params.set('name', filters.name);
+    if (filters?.location) params = params.set('location', filters.location);
 
     return {
       url: `${URL_BOOKING_SERVICE}/api/v1/events`,

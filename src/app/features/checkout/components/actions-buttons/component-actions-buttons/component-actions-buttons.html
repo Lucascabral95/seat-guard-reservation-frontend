@@ -1,14 +1,50 @@
-<div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+<!-- <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
         <a routerLink="/dentro" class="px-8 py-3 bg-gray-900 text-white font-bold rounded-md hover:bg-gray-800 transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-center cursor-pointer">
           Volver al Inicio
         </a>
-        <!-- <button class="px-8 py-3 bg-white text-gray-900 border border-gray-300 font-bold rounded-md hover:bg-gray-50 transition shadow-sm hover:shadow text-center flex items-center justify-center gap-2 cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          Descargar E-Ticket
-        </button> -->
         <button [routerLink]="['/dentro/my-tickets', order_id]" class="px-8 py-3 bg-white text-gray-900 border border-gray-300 font-bold rounded-md hover:bg-gray-50 transition shadow-sm hover:shadow text-center flex items-center justify-center gap-2 cursor-pointer">
           Ver resumen de compra
         </button>
-      </div>
+      </div> -->
+<div class="mt-8 max-w-xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+  <a
+    routerLink="/dentro"
+    class="px-8 py-3 bg-gray-900 text-white font-bold rounded-md
+           hover:bg-gray-800 transition shadow-lg hover:shadow-xl
+           transform hover:-translate-y-0.5
+           text-center cursor-pointer"
+  >
+    Volver al Inicio
+  </a>
+
+  <button
+    [routerLink]="['/dentro/my-tickets', order_id]"
+    class="px-8 py-3 bg-white text-gray-900 border border-gray-300 font-bold rounded-md
+           hover:bg-gray-50 transition shadow-sm hover:shadow
+           flex items-center justify-center gap-2 cursor-pointer"
+  >
+    Ver resumen de compra
+  </button>
+
+  <button
+  (click)="viewTicket.emit()"
+  [disabled]="isLoadingPdf()"
+  class="sm:col-span-2 px-8 py-3
+         bg-blue-600 text-white font-bold uppercase tracking-wide
+         rounded-md hover:bg-blue-700
+         disabled:bg-gray-400 transition
+         flex items-center justify-center gap-2 cursor-pointer">
+
+  @if (isLoadingPdf()) {
+    <span class="animate-spin">⏳</span>
+    <span>Abriendo comprobante…</span>
+  } @else {
+    <span>📄</span>
+    <span>Visualizar comprobante</span>
+  }
+</button>
+
+
+
+</div>

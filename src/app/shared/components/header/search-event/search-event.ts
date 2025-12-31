@@ -15,19 +15,40 @@ export default class SearchEvent {
   private eventsService = inject(EventsService);
 
   searchText = signal('');
+  searchLocation = signal('');
   visible = signal(false);
 
   filters = computed<FiltersEventsInterface | undefined>(() => {
-    const value = this.searchText().trim();
-    if (value.length < 2) return undefined;
-    return { name: value };
+    const nameValue = this.searchText().trim();
+    const locationValue = this.searchLocation().trim();
+
+    if (nameValue.length < 2 && locationValue.length < 2) {
+      return undefined;
+    }
+
+    const filters: FiltersEventsInterface = {};
+    if (nameValue.length >= 2) filters.name = nameValue;
+    if (locationValue.length >= 2) filters.location = locationValue;
+
+    return filters;
   });
 
   eventsResource = this.eventsService.getEventsByFilter(() => this.filters());
 
   onInput(value: string) {
     this.searchText.set(value);
-    this.visible.set(value.trim().length >= 2);
+    this.updateVisibility();
+  }
+
+  onLocationInput(value: string) {
+    this.searchLocation.set(value);
+    this.updateVisibility();
+  }
+
+  private updateVisibility() {
+    const hasName = this.searchText().trim().length >= 2;
+    const hasLocation = this.searchLocation().trim().length >= 2;
+    this.visible.set(hasName || hasLocation);
   }
 
   closeResults() {

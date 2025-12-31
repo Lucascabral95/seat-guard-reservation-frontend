@@ -27,7 +27,11 @@
       <component-main-card [order]="checkoutSuccessOrderBookingResource.value()!" />
 
       <!-- BOTONES DE ACCIÓN -->
-      <component-actions-buttons [order_id]="order.id" />
+      <component-actions-buttons
+      [order_id]="order.id"
+  [isLoadingPdf]="isLoadingPdf"
+  (viewTicket)="openTicket()"
+      />
 
     }
   </div>

@@ -1,6 +1,7 @@
 export interface FiltersEventsInterface {
   name?: string;
   gender?: Gender;
+  location?: string;
 }
 
 export enum Gender {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { RouterLink } from "@angular/router";
 
 @Component({
@@ -9,4 +9,8 @@ import { RouterLink } from "@angular/router";
 })
 export default class ComponentActionsButtons {
      @Input({ required: true }) order_id!: string;
+
+     @Input({ required: true }) isLoadingPdf = signal<boolean>(false);
+
+     @Output() viewTicket = new EventEmitter<void>();
 }

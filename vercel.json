@@ -2,6 +2,14 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/:match*",
+      "destination": "http://monorepo-prod-alb-895613190.us-east-1.elb.amazonaws.com/:match*"
+    },
+    {
+      "source": "/booking/:match*",
+      "destination": "http://monorepo-prod-alb-895613190.us-east-1.elb.amazonaws.com/:match*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

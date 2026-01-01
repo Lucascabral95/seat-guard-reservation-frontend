@@ -1,8 +1,17 @@
 {
-  "routes": [
+  "version": 2,
+  "public": true,
+  "builds": [
     {
-      "src": "/(.*)",
-      "dest": "/server"
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist/seatguard-reservation-frontend/browser" }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

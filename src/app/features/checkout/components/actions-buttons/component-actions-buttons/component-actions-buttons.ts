@@ -9,8 +9,6 @@ import { RouterLink } from "@angular/router";
 })
 export default class ComponentActionsButtons {
      @Input({ required: true }) order_id!: string;
-
      @Input({ required: true }) isLoadingPdf = signal<boolean>(false);
-
      @Output() viewTicket = new EventEmitter<void>();
 }

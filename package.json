@@ -5,8 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:ssr": "ng build && ng run app:server",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:ci": "ng test --no-watch --browsers ChromeHeadlessCI",
     "serve:ssr:seatguard-reservation-frontend": "node dist/seatguard-reservation-frontend/server/server.mjs"
   },
   "prettier": {

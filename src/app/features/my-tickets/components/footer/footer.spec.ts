@@ -1,23 +1,69 @@
+import 'zone.js';
+import 'zone.js/testing';
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { Footer } from './footer';
+import FooterComponentMyTickets from './footer';
 
-describe('Footer', () => {
-  let component: Footer;
-  let fixture: ComponentFixture<Footer>;
+describe('FooterComponentMyTickets', () => {
+  let fixture: ComponentFixture<FooterComponentMyTickets>;
+  let component: FooterComponentMyTickets;
+
+  const mockOrder = {
+    id: 'order-123',
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Footer]
-    })
-    .compileComponents();
+      imports: [
+        FooterComponentMyTickets,
+        RouterTestingModule,
+      ],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(Footer);
+    fixture = TestBed.createComponent(FooterComponentMyTickets);
     component = fixture.componentInstance;
+
+    component.order = mockOrder;
+    component.openTicket = jasmine.createSpy('openTicket');
+
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render order id', () => {
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('order-123');
+  });
+
+  it('should call openTicket when button is clicked', () => {
+    const button: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button');
+
+    button.click();
+
+    expect(component.openTicket).toHaveBeenCalled();
+  });
+
+  it('should disable button when isLoadingPdf is true', () => {
+    component.isLoadingPdf.set(true);
+    fixture.detectChanges();
+
+    const button: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button');
+
+    expect(button.disabled).toBeTrue();
+  });
+
+  it('should show pdf error message when pdfError is set', () => {
+    component.pdfError.set('Error downloading PDF');
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Error downloading PDF');
   });
 });

@@ -4,6 +4,7 @@ import 'zone.js/testing';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { PLATFORM_ID } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import MyTicketApp from './my-ticket-app';
 import { MyTicketsService } from '../../service/my-tickets.service';
@@ -35,7 +36,10 @@ describe('MyTicketApp', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MyTicketApp],
+      imports: [
+        MyTicketApp,
+        HttpClientTestingModule,
+      ],
       providers: [
         provideRouter([]),
         { provide: PLATFORM_ID, useValue: 'browser' },
@@ -78,9 +82,7 @@ describe('MyTicketApp', () => {
 
   it('should set orderId when ticket is loaded', () => {
     const fixture = createComponent();
-    const component = fixture.componentInstance;
-
-    expect(component.orderId()).toBe('order-1');
+    expect(fixture.componentInstance.orderId()).toBe('order-1');
   });
 
   it('should request customer data when orderId is available', () => {

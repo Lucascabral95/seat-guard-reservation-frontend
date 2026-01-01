@@ -3,6 +3,8 @@ import 'zone.js/testing';
 
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import CheckoutSuccessPage from './checkout-success-page';
 import { CheckoutService } from '../../service/checkout.service';
 
@@ -37,7 +39,10 @@ describe('CheckoutSuccessPage', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [CheckoutSuccessPage],
+      imports: [
+        CheckoutSuccessPage,
+        HttpClientTestingModule,
+      ],
       providers: [
         {
           provide: CheckoutService,
@@ -108,7 +113,6 @@ describe('CheckoutSuccessPage', () => {
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
-
     expect(el.querySelector('component-header-confirmation')).toBeTruthy();
     expect(el.querySelector('component-main-card')).toBeTruthy();
     expect(el.querySelector('component-actions-buttons')).toBeTruthy();

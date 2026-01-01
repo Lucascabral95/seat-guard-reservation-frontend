@@ -9,9 +9,9 @@ console.log('--- DEBUG ENVS END ---');
 const targetPath = path.join(__dirname, '../src/environments/environment.ts');
 const targetPathDev = path.join(__dirname, '../src/environments/environment.development.ts');
 
-const apiUrl = process.env.API_URL || 'http://localhost:3000';
-const apiBookingUrl = process.env.API_BOOKING_SERVICE_URL || 'http://localhost:4000';
-const internalSecret = process.env.X_INTERNAL_SECRET || 'SECRET_DEFAULT_LOCAL';
+const apiUrl = process.env.APIURL || 'http://localhost:3000';
+const apiBookingUrl = process.env.APIBOOKINGSERVICEURL || 'http://localhost:4000';
+const internalSecret = process.env.XINTERNALSECRET || 'SECRET_DEFAULT_LOCAL';
 const version = process.env.VERSION || '1.0.0';
 const localStorage = process.env.LOCALSTORAGE || 'tokenAccess';
 

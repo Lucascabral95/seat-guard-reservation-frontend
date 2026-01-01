@@ -1,19 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('--- DEBUG ENVS START ---');
-console.log('Todas las keys disponibles:', Object.keys(process.env));
-console.log('Valor API_URL:', process.env.API_URL);
-console.log('--- DEBUG ENVS END ---');
-
 const targetPath = path.join(__dirname, '../src/environments/environment.ts');
 const targetPathDev = path.join(__dirname, '../src/environments/environment.development.ts');
 
-const apiUrl = process.env.APIURL || 'http://localhost:3000';
-const apiBookingUrl = process.env.APIBOOKINGSERVICEURL || 'http://localhost:4000';
-const internalSecret = process.env.XINTERNALSECRET || 'SECRET_DEFAULT_LOCAL';
+const apiUrl = process.env.API_URL || 'http://localhost:3000';
+const apiBookingUrl = process.env.API_BOOKING_SERVICE_URL || 'http://localhost:4000';
+const internalSecret = process.env.X_INTERNAL_SECRET || 'SECRET_DEFAULT_LOCAL';
 const version = process.env.VERSION || '1.0.0';
-const localStorage = process.env.LOCALSTORAGE || 'tokenAccess';
+const localStorageKey = process.env.LOCAL_STORAGE_KEY || 'tokenAccess';
 
 const envConfigFile = `export const environment = {
   production: true,
@@ -21,11 +16,12 @@ const envConfigFile = `export const environment = {
   apiBookingServiceUrl: '${apiBookingUrl}',
   appName: "SeatGuard Reservation Frontend",
   version: '${version}',
-  localStorage: '${localStorage}',
+  localStorage: '${localStorageKey}',
   xInternalSecret: '${internalSecret}',
 };
 `;
 
+// GENERACIÓN DE ARCHIVOS
 const dir = path.dirname(targetPath);
 if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir, { recursive: true });

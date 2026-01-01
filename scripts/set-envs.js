@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+console.log('--- DEBUG ENVS START ---');
+console.log('Todas las keys disponibles:', Object.keys(process.env));
+console.log('Valor API_URL:', process.env.API_URL);
+console.log('--- DEBUG ENVS END ---');
+
 const targetPath = path.join(__dirname, '../src/environments/environment.ts');
 const targetPathDev = path.join(__dirname, '../src/environments/environment.development.ts');
 

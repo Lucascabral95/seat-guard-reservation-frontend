@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:ssr",
-  "outputDirectory": "dist/seatguard-reservation-frontend",
   "rewrites": [
     {
       "source": "/proxy(.*)",

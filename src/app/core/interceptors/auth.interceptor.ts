@@ -52,7 +52,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   let url = req.url;
 
-  if (isBrowser && url.startsWith('http://') && !url.includes('localhost')) {
+  if (isBrowser && url.startsWith('http://') && !url.includes('localhost || 127.0.0.1')) {
      console.log('Interceptor: Redirigiendo URL insegura a Proxy ->', url);
      url = `/proxy?target=${encodeURIComponent(url)}`;
   }

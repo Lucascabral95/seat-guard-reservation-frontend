@@ -1,3 +1,4 @@
+// Funciona en desarrollo
 // import { HttpInterceptorFn } from '@angular/common/http';
 // import { inject, PLATFORM_ID } from '@angular/core';
 // import { isPlatformBrowser } from '@angular/common';
@@ -29,6 +30,7 @@
 //   return next(req);
 // };
 
+// Funciona en produccion
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';

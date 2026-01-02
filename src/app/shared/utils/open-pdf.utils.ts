@@ -24,9 +24,11 @@ export function openPdf({
 
   download$(orderId).subscribe({
     next: (blob) => {
-      const url = URL.createObjectURL(blob);
+      const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+      const url = URL.createObjectURL(pdfBlob);
 
       window.open(url, '_blank');
+
 
       setLoading(false);
     },

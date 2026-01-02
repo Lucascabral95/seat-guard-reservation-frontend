@@ -51,7 +51,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   headers = headers.set('X-Internal-Secret', SECRET_X_INTERNAL);
 
   let url = req.url;
+
   if (isBrowser && url.startsWith('http://') && !url.includes('localhost')) {
+     console.log('Interceptor: Redirigiendo URL insegura a Proxy ->', url);
      url = `/proxy?target=${encodeURIComponent(url)}`;
   }
 

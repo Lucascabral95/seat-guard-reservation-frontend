@@ -6,6 +6,14 @@
       "destination": "/api/proxy"
     },
     {
+      "source": "/assets/(.*)",
+      "destination": "/assets/$1"
+    },
+    {
+      "source": "/(.*)\\.(css|js|png|jpg|jpeg|gif|ico|svg|json)",
+      "destination": "/$1.$2"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

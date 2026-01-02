@@ -52,8 +52,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   let url = req.url;
 
-  // Redirigir URLs HTTP inseguras al proxy solo en navegador
-  if (isBrowser && url.startsWith('http://') && !url.includes('localhost') && !url.includes('127.0.0.1')) {
+  if (isBrowser && url.startsWith('http://') && !url.includes('localhost')) {
      console.log('Interceptor: Redirigiendo URL insegura a Proxy ->', url);
      url = `/proxy?target=${encodeURIComponent(url)}`;
   }

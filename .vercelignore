@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm run build:ssr",
+  "installCommand": "npm install",
+  "outputDirectory": "dist/seatguard-reservation-frontend"
+}

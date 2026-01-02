@@ -19,8 +19,9 @@
     Ver resumen de compra
   </button>
 
+  <!-- Agregale esto = (click)="viewTicket.emit()" -->
   <button
-  (click)="viewTicket.emit()"
+    (click)="viewPDF()"
   [disabled]="isLoadingPdf()"
   class="sm:col-span-2 px-8 py-3
          bg-blue-600 text-white font-bold uppercase tracking-wide

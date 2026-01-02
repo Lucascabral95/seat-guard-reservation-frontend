@@ -15,8 +15,10 @@
         Orden ID · {{ order.id }}
       </span>
 
+      <!-- Esta funcion es para abrir el PDF (click)="openTicket()" -->
+
       <button
-        (click)="openTicket()"
+        (click)="openLinkPDF()"
         [disabled]="isLoadingPdf()"
         class="flex items-center gap-2 px-5 py-2.5
                bg-gray-900 text-white text-sm font-bold uppercase tracking-wide

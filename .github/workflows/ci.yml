@@ -1,7 +1,6 @@
 # .github/workflows/ci.yml
 name: CI SeatGuard
 
-# Se ejecuta en Pull Requests hacia main y en pushes directos a main
 on:
   push:
     branches: [ "main" ]
@@ -19,15 +18,42 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Coincide con tu @types/node ^20
+          node-version: '20'
           cache: 'npm'
 
+      - name: Crear archivos de environment
+        run: |
+          mkdir -p src/environments
+
+          cat > src/environments/environment.ts << 'EOF'
+          export const environment = {
+            production: true,
+            apiUrl: '${{ secrets.API_URL_PRODUCTION }}',
+            apiBookingServiceUrl: '${{ secrets.API_BOOKING_SERVICE_URL_PRODUCTION }}',
+            appName: "SeatGuard Reservation Frontend",
+            version: "1.0.0",
+            localStorage: "tokenAccess",
+            xInternalSecret: "${{ secrets.X_INTERNAL_SECRET }}"
+          };
+          EOF
+
+          cat > src/environments/environment.development.ts << 'EOF'
+          export const environment = {
+            production: false,
+            apiUrl: '${{ secrets.API_URL_DEVELOPMENT }}',
+            apiBookingServiceUrl: '${{ secrets.API_BOOKING_SERVICE_URL_DEVELOPMENT }}',
+            appName: "SeatGuard Reservation Frontend",
+            version: "1.0.0",
+            localStorage: "tokenAccess",
+            xInternalSecret: "${{ secrets.X_INTERNAL_SECRET }}"
+          };
+          EOF
+
       - name: Instalar dependencias
-        run: npm ci # 'ci' es más rápido y seguro que 'install' para entornos limpios
+        run: npm ci
 
       - name: Ejecutar Tests (Unitarios)
         run: npm run test:ci
 
-      - name: Verificar Build (Opcional pero recomendado)
-        # Esto asegura que el código compila antes de intentar desplegar
+      - name: Verificar Build
         run: npm run build -- --configuration=production

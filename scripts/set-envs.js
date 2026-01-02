@@ -1,10 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log('--- DEBUG ENVS ---');
-console.log('AWS_ALB_URL:', process.env.AWS_ALB_URL ? process.env.AWS_ALB_URL : 'UNDEFINED');
-console.log('------------------');
-
 const targetPath = path.join(__dirname, '../src/environments/environment.ts');
 const targetPathDev = path.join(__dirname, '../src/environments/environment.development.ts');
 

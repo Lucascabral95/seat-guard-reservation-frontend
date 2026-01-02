@@ -2,16 +2,12 @@
   "version": 2,
   "rewrites": [
     {
-     "source": "/(.*)", "destination": "/index.html"
+      "source": "/proxy(.*)",
+      "destination": "/api/proxy"
     },
     {
-      "source": "/assets/(.*)", "destination": "/assets/$1"
-    },
-    {
-      "source": "/(.*)\\.(css|js|png|jpg|jpeg|gif|ico|svg|json)", "destination": "/$1.$2"
-    },
-    {
-      "source": "/(.*)", "destination": "/index.html"
+      "source": "/((?!proxy|api/proxy).*)",
+      "destination": "/index.html"
     }
   ]
 }

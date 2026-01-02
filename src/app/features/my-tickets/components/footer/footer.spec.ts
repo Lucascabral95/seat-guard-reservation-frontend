@@ -26,7 +26,6 @@ describe('FooterComponentMyTickets', () => {
     component = fixture.componentInstance;
 
     component.order = mockOrder;
-    component.openTicket = jasmine.createSpy('openTicket');
 
     fixture.detectChanges();
   });
@@ -40,13 +39,18 @@ describe('FooterComponentMyTickets', () => {
     expect(el.textContent).toContain('order-123');
   });
 
-  it('should call openTicket when button is clicked', () => {
+  it('should open pdf when button is clicked', () => {
+    spyOn(window, 'open');
+
     const button: HTMLButtonElement =
       fixture.nativeElement.querySelector('button');
 
     button.click();
 
-    expect(component.openTicket).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(
+      jasmine.stringContaining('/tickets/order-123/download'),
+      '_blank'
+    );
   });
 
   it('should disable button when isLoadingPdf is true', () => {

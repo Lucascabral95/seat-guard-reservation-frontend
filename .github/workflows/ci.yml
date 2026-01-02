@@ -1,0 +1,33 @@
+# .github/workflows/ci.yml
+name: CI SeatGuard
+
+# Se ejecuta en Pull Requests hacia main y en pushes directos a main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Coincide con tu @types/node ^20
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci # 'ci' es más rápido y seguro que 'install' para entornos limpios
+
+      - name: Ejecutar Tests (Unitarios)
+        run: npm run test:ci
+
+      - name: Verificar Build (Opcional pero recomendado)
+        # Esto asegura que el código compila antes de intentar desplegar
+        run: npm run build -- --configuration=production

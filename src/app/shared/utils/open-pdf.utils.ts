@@ -1,11 +1,11 @@
-// import { Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
-// interface OpenPdfParams {
-//   orderId: string | null;
-//   download$: (orderId: string) => Observable<Blob>;
-//   setLoading: (value: boolean) => void;
-//   setError: (message: string | null) => void;
-// }
+interface OpenPdfParams {
+  orderId: string | null;
+  download$: (orderId: string) => Observable<Blob>;
+  setLoading: (value: boolean) => void;
+  setError: (message: string | null) => void;
+}
 
 // export function openPdf({
 //   orderId,
@@ -38,14 +38,6 @@
 // }
 
 // shared/utils/open-pdf.utils.ts
-import { Observable } from 'rxjs';
-
-interface OpenPdfParams {
-  orderId: string | null;
-  download$: (orderId: string) => Observable<Blob>;
-  setLoading: (value: boolean) => void;
-  setError: (message: string | null) => void;
-}
 
 export function openPdf({
   orderId,
@@ -53,43 +45,38 @@ export function openPdf({
   setLoading,
   setError
 }: OpenPdfParams) {
-  if (!orderId) {
-    setError('No se pudo obtener el ID de la orden');
-    setLoading(false);
-    return;
-  }
+  if (!orderId) return;
 
   setLoading(true);
-  setError(null);
 
   download$(orderId).subscribe({
     next: (data) => {
-      // 1. Crear Blob explícito
+      // 1. Crear el Blob
       const blob = new Blob([data], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
 
-      // 2. ESTRATEGIA: Elemento <a> invisible
-      // Esto funciona mejor que window.open directo para Blobs en muchos navegadores
+      // 2. ABRIR EN PESTAÑA (Sin descargar)
+      // La clave es NO poner el atributo 'download'
       const link = document.createElement('a');
       link.href = url;
-      link.target = '_blank';
-      link.download = `ticket-${orderId}.pdf`; // Sugerir nombre de archivo
+      link.target = '_blank'; // Abrir en nueva pestaña
+      // link.download = ...; <--- ¡BORRA ESTA LÍNEA! Si la dejas, se descarga y deja la pestaña en blanco.
 
       document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
 
-      // 3. Limpieza diferida
-      // Damos tiempo al navegador para renderizar antes de revocar
+      // 3. Limpieza diferida (importante no hacerlo muy rápido)
+      // Esperamos 1 minuto para asegurar que el PDF cargó en la otra pestaña
       setTimeout(() => {
-        document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-      }, 1000);
+      }, 60000);
 
       setLoading(false);
     },
     error: (err) => {
-      console.error('Error:', err);
-      setError('Error al abrir el ticket');
+      console.error(err);
+      setError('No se pudo abrir el ticket.');
       setLoading(false);
     }
   });

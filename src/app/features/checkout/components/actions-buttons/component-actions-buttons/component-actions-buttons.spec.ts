@@ -35,24 +35,27 @@ describe('ComponentActionsButtons', () => {
   });
 
   it('should render navigation buttons', () => {
-  const el: HTMLElement = fixture.nativeElement;
+    const el: HTMLElement = fixture.nativeElement;
 
-  const anchorLinks = el.querySelectorAll('a');
-  const buttons = el.querySelectorAll('button');
+    const anchorLinks = el.querySelectorAll('a');
+    const buttons = el.querySelectorAll('button');
 
-  expect(anchorLinks.length).toBe(1);
-  expect(buttons.length).toBe(2);
-});
+    expect(anchorLinks.length).toBe(1);
+    expect(buttons.length).toBe(2);
+  });
 
-  it('should emit viewTicket when clicking the button', () => {
-    spyOn(component.viewTicket, 'emit');
+  it('should open pdf in new tab when clicking the button', () => {
+    spyOn(window, 'open');
 
     const buttons = fixture.nativeElement.querySelectorAll('button');
     const viewTicketButton: HTMLButtonElement = buttons[1];
 
     viewTicketButton.click();
 
-    expect(component.viewTicket.emit).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(
+      jasmine.stringContaining('/tickets/order-123/download'),
+      '_blank'
+    );
   });
 
   it('should disable view ticket button when isLoadingPdf is true', () => {

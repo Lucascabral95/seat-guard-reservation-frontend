@@ -1,0 +1,62 @@
+name: CI SeatGuard
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Crear environment para Tests (Localhost)
+        run: |
+          mkdir -p src/environments
+          cat > src/environments/environment.ts << 'EOF'
+          export const environment = {
+            production: false,
+            apiUrl: 'http://localhost:3000',
+            apiBookingServiceUrl: 'http://localhost:4000',
+            appName: "SeatGuard Reservation Frontend",
+            version: "1.0.0",
+            localStorage: "tokenAccess",
+            xInternalSecret: "test-secret"
+          };
+          EOF
+          # Creamos el de development también por si acaso
+          cp src/environments/environment.ts src/environments/environment.development.ts
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar Tests (Unitarios)
+        run: npm run test:ci
+
+      - name: Crear environment para Producción
+        if: success()
+        run: |
+          cat > src/environments/environment.ts << 'EOF'
+          export const environment = {
+            production: true,
+            apiUrl: '${{ secrets.API_URL_PRODUCTION }}',
+            apiBookingServiceUrl: '${{ secrets.API_BOOKING_SERVICE_URL_PRODUCTION }}',
+            appName: "SeatGuard Reservation Frontend",
+            version: "1.0.0",
+            localStorage: "tokenAccess",
+            xInternalSecret: "${{ secrets.X_INTERNAL_SECRET }}"
+          };
+          EOF
+
+      - name: Verificar Build
+        run: npm run build -- --configuration=production

@@ -37,6 +37,7 @@
 //   });
 // }
 
+// shared/utils/open-pdf.utils.ts
 import { Observable } from 'rxjs';
 
 interface OpenPdfParams {
@@ -63,26 +64,32 @@ export function openPdf({
 
   download$(orderId).subscribe({
     next: (data) => {
-      // 1. IMPORTANTE: Recrear el Blob forzando el tipo 'application/pdf'
-      // Esto arregla que se vea como texto crudo (%PDF-1.3...)
-      const file = new Blob([data], { type: 'application/pdf' });
+      // 1. Crear Blob explícito
+      const blob = new Blob([data], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
 
-      // 2. Crear la URL del objeto
-      const fileURL = URL.createObjectURL(file);
+      // 2. ESTRATEGIA: Elemento <a> invisible
+      // Esto funciona mejor que window.open directo para Blobs en muchos navegadores
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.download = `ticket-${orderId}.pdf`; // Sugerir nombre de archivo
 
-      // 3. Abrir en nueva pestaña
-      const pdfWindow = window.open(fileURL, '_blank');
+      document.body.appendChild(link);
+      link.click();
 
-      // Fallback: Si el bloqueador de popups impide abrirlo
-      if (!pdfWindow) {
-          setError("El navegador bloqueó la ventana. Por favor permite pop-ups.");
-      }
+      // 3. Limpieza diferida
+      // Damos tiempo al navegador para renderizar antes de revocar
+      setTimeout(() => {
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      }, 1000);
 
       setLoading(false);
     },
     error: (err) => {
-      console.error(err);
-      setError('Error al descargar el ticket');
+      console.error('Error:', err);
+      setError('Error al abrir el ticket');
       setLoading(false);
     }
   });

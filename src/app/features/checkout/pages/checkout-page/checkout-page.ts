@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CheckoutService } from '../../service/checkout.service';
 import SendMethod from '../../components/checkout-page-components/send-method/send-method';
   import DataCustomer from '../../components/checkout-page-components/data-customer/data-customer';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-checkout-page',
@@ -26,6 +27,7 @@ import SendMethod from '../../components/checkout-page-components/send-method/se
 export default class CheckoutPage implements OnInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
+  private seo = inject(SeoService);
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -65,7 +67,13 @@ export default class CheckoutPage implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  ngOnInit() { this.seo.setPageMeta({
+      title: 'Finalizar Compra',
+      description: 'Completa tu compra de forma segura',
+      noIndex: true,
+    });
+
+
     this.startTimer();
   }
 

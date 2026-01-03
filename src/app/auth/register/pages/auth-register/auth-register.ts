@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {  RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthRegisterInterface } from '../../interfaces';
 import { AuthLoginService } from '../../../login/service/auth-login-service';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-auth-register',
@@ -12,9 +13,10 @@ import { AuthLoginService } from '../../../login/service/auth-login-service';
   templateUrl: './auth-register.html',
   styleUrl: './auth-register.scss',
 })
-export default class AuthRegister {
+export default class AuthRegister implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private authService = inject(AuthLoginService);
+  private seo = inject(SeoService);
 
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
@@ -31,6 +33,14 @@ export default class AuthRegister {
       Validators.pattern(/^\S+\s+\S+.*$/)
     ]]
   });
+
+  ngOnInit(): void {
+    this.seo.setPageMeta({
+      title: 'Crear Cuenta',
+      description: 'Regístrate en SeatGuard y empieza a reservar tus eventos favoritos',
+      image: 'https://seatguard.com/assets/images/register-og.jpg',
+    });
+  }
 
   onSubmit() {
     if (this.myForm.invalid) {

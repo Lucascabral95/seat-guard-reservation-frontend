@@ -12,6 +12,7 @@ import DataCustomerComponent from '../../components/data-customer-component/data
 import { PdfService } from '../../service/pdf.service';
 import { openPdf } from '../../../../shared/utils/open-pdf.utils';
 import FooterComponentMyTickets from '../../components/footer/footer';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-my-ticket-app',
@@ -35,6 +36,7 @@ export default class MyTicketApp implements OnInit {
   private myTicketService = inject(MyTicketsService);
   private checkoutService = inject(CheckoutService);
   private pdfService = inject(PdfService);
+  private seo = inject(SeoService);
 
   id = signal<string | null>(null);
   orderId = signal<string | null>(null);
@@ -44,6 +46,12 @@ export default class MyTicketApp implements OnInit {
   pdfError = signal<string | null>(null);
 
   ngOnInit() {
+     this.seo.setPageMeta({
+      title: 'Detalle de Ticket',
+      description: 'Información de tu ticket y orden de compra',
+      noIndex: true,
+    });
+
     if (this.isBrowser) {
       this.id.set(this.route.snapshot.paramMap.get('id'));
     }
@@ -58,6 +66,14 @@ export default class MyTicketApp implements OnInit {
       const order = this.myTicketById.value();
       if (order?.id) {
         this.orderId.set(order.id);
+      }
+
+       if (this.myTicketById.value()?.eventName) {
+        this.seo.setPageMeta({
+          title: `Ticket - ${this.myTicketById.value()?.eventName}`,
+          description: `Detalle de tu ticket para ${this.myTicketById.value()?.eventName}`,
+          noIndex: true,
+        });
       }
     });
   }

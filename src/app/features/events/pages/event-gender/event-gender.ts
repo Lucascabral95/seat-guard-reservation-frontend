@@ -6,6 +6,7 @@ import { BlackErrorComponent } from '../../../../shared/components/black-error/b
 import { EventsService } from '../../service/events.service';
 import { Gender } from '../../interfaces/filter-events.interface';
 import { BannerDataInterface } from '../../../home/interfaces';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'component-event-gender',
@@ -17,6 +18,7 @@ export default class EventGender {
    gender = input.required<Gender>();
    private eventsService = inject(EventsService);
    private platformId = inject(PLATFORM_ID);
+   private seo = inject(SeoService);
 
    bannerHeroTitle = computed(() => this.gender());
 
@@ -40,4 +42,13 @@ export default class EventGender {
    });
 
    eventsResource = this.eventsService.getEventsByFilter(this.eventRequest)
+
+    ngOnInit(): void {
+    const genderName = this.normalizedGender();
+    this.seo.setPageMeta({
+      title: `Eventos de ${genderName}`,
+      description: `Explora todos los eventos de la categoría ${genderName}`,
+      noIndex: true,
+    });
+  }
 }

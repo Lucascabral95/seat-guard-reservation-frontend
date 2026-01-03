@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthLoginService } from '../../service/auth-login-service';
 import { Credentials } from '../../interfaces';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-auth-login',
@@ -12,9 +13,10 @@ import { Credentials } from '../../interfaces';
   templateUrl: './auth-login.html',
   styleUrl: './auth-login.scss',
 })
-export default class AuthLogin {
+export default class AuthLogin implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private authService = inject(AuthLoginService);
+  private seo = inject(SeoService);
 
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
@@ -26,6 +28,14 @@ export default class AuthLogin {
       Validators.minLength(6)
     ]]
   });
+
+  ngOnInit(): void {
+    this.seo.setPageMeta({
+      title: 'Iniciar Sesión',
+      description: 'Accede a tu cuenta de SeatGuard para gestionar tus reservas de eventos',
+      image: 'https://seatguard.com/assets/images/login-og.jpg',
+    });
+  }
 
   onSubmit() {
     if (this.myForm.invalid) {

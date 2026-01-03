@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CheckoutService } from '../../service/checkout.service';
 import LoadingSuccessPage from '../../components/loading/loading-success-page/loading-success-page';
@@ -9,6 +9,7 @@ import ComponentActionsButtons from '../../components/actions-buttons/component-
 import HeaderConfirmation from '../../components/header-confirmation/header-confirmation';
 import { openPdf } from '../../../../shared/utils/open-pdf.utils';
 import { PdfService } from '../../../my-tickets/service/pdf.service';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-checkout-success-page',
@@ -24,12 +25,13 @@ import { PdfService } from '../../../my-tickets/service/pdf.service';
   templateUrl: './checkout-success-page.html',
   styles: ``
 })
-export default class CheckoutSuccessPage {
+export default class CheckoutSuccessPage implements OnInit {
     private platformId = inject(PLATFORM_ID);
     private isBrowser = isPlatformBrowser(this.platformId);
     private serviceCheckout = inject(CheckoutService);
     private route = inject(ActivatedRoute);
     private pdfService = inject(PdfService);
+    private seo = inject(SeoService);
 
     order_id = this.route.snapshot.queryParamMap.get('order_id');
 
@@ -43,6 +45,14 @@ export default class CheckoutSuccessPage {
 
     isLoadingPdf = signal<boolean>(false);
 pdfError = signal<string | null>(null);
+
+ngOnInit(): void {
+    this.seo.setPageMeta({
+      title: 'Compra Exitosa',
+      description: 'Tu compra se ha procesado correctamente',
+      noIndex: true,
+    });
+  }
 
     openTicket() {
   openPdf({

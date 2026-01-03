@@ -16,7 +16,6 @@ const eventsRoutes: Routes = [
   {
     path: "gender/:gender",
     loadComponent: () => import("./pages/event-gender/event-gender"),
-
   },
   {
     path: "**",

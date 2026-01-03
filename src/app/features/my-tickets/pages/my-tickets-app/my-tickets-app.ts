@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MyTicketsService } from '../../service/my-tickets.service';
 import MyTicketsError from '../../components/error/error';
 import EmptyMyTickets from '../../components/empty/empty';
@@ -9,6 +9,7 @@ import HeaderMyTickets from '../../components/header/header';
 import { BuyStatus } from '../../interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import FiltersMyTickets from '../../components/filters/filters';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-my-tickets-app',
@@ -23,10 +24,11 @@ import FiltersMyTickets from '../../components/filters/filters';
   ],
   templateUrl: './my-tickets-app.html',
 })
-export default class MyTicketsApp {
+export default class MyTicketsApp implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private myTicketsService = inject(MyTicketsService);
+  private seo = inject(SeoService);
 
   BuyStatus = BuyStatus;
 
@@ -47,6 +49,14 @@ export default class MyTicketsApp {
       } else {
         this.selectedStatus.set('all');
       }
+    });
+  }
+
+   ngOnInit(): void {
+    this.seo.setPageMeta({
+      title: 'Mis Tickets',
+      description: 'Gestiona todos tus tickets y reservas confirmadas',
+      noIndex: true,
     });
   }
 

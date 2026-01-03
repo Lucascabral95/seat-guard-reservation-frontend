@@ -8,6 +8,7 @@ import { CreateSessionCheckoutStripeInterface, Currency } from '../../../checkou
 import { HttpErrorResponse } from '@angular/common/http';
 import Toasts from '../../../../shared/components/toasts/toasts';
 import { Router } from '@angular/router';
+import { SeoService } from '../../../../core/services/seo.service';
 
 const TIME_VISIBLE_TOAST = 1800;
 
@@ -26,6 +27,7 @@ export default class AllSeatsPages {
   private router = inject(Router)
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
+  private seo = inject(SeoService);
 
   eventByIdResource = this.eventsService.getEventByIdResource(this.id);
   selectedSeatIds = signal<Set<string>>(new Set());
@@ -85,8 +87,25 @@ export default class AllSeatsPages {
            console.log('IDs seleccionados:', [...this.selectedSeatIds()]);
         }
       }
+
+      const event = this.eventByIdResource.value();
+      if (event) {
+        this.seo.setPageMeta({
+          title: `Seleccionar Asientos - ${event.name}`,
+          description: `Elige tus asientos para ${event.name}`,
+          noIndex: true,
+        });
+      }
     });
   }
+
+  ngOnInit(): void {
+   this.seo.setPageMeta({
+     title: 'Seleccionar Asientos',
+     description: 'Elige tus asientos preferidos para el evento',
+     noIndex: true,
+   });
+ }
 
   toggleSeat(id: string, currentStatus: Status) {
     if (currentStatus === Status.Sold || (currentStatus as any) === Status.Locked) return;

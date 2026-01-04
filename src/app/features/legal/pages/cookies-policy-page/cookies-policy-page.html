@@ -1,0 +1,24 @@
+<div class="min-h-screen bg-white font-sans text-gray-900">
+
+  <!-- Header -->
+  <component-header-cookies [lastUpdated]="lastUpdated" />
+
+  <div class="max-w-4xl mx-auto px-4 md:px-8 py-12">
+
+    <!-- Sección Explicativa -->
+    <component-explanatory-section />
+
+    <!-- Auditoría de Cookies -->
+    <component-cookies-auditory
+  [cookies]="auditTable"
+  [filteredCookies]="filteredCookies"
+  [activeFilter]="activeFilter()"
+  [definitions]="definitions"
+  (filterChange)="setFilter($event)"
+/>
+
+    <!-- Gestión -->
+    <component-management-cookies />
+
+  </div>
+</div>

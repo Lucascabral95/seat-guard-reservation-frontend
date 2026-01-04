@@ -1,0 +1,74 @@
+<section class="mb-16">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-xl font-bold text-gray-900">Auditoría de Cookies Activas</h2>
+
+    <div class="flex gap-2">
+      <button
+        (click)="setFilter('all')"
+        class="px-3 py-1.5 text-xs font-semibold rounded-full transition-colors"
+        [class.bg-gray-900]="activeFilter === 'all'"
+        [class.text-white]="activeFilter === 'all'"
+        [class.bg-gray-100]="activeFilter !== 'all'"
+        [class.text-gray-600]="activeFilter !== 'all'"
+      >
+        Todas
+      </button>
+
+      <button
+        (click)="setFilter('necessary')"
+        class="px-3 py-1.5 text-xs font-semibold rounded-full transition-colors"
+        [class.bg-gray-900]="activeFilter === 'necessary'"
+        [class.text-white]="activeFilter === 'necessary'"
+        [class.bg-gray-100]="activeFilter !== 'necessary'"
+        [class.text-gray-600]="activeFilter !== 'necessary'"
+      >
+        Necesarias
+      </button>
+    </div>
+  </div>
+
+  <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gray-50 border-b border-gray-200">
+          <tr>
+            <th class="px-6 py-3 font-semibold text-gray-900">Cookie</th>
+            <th class="px-6 py-3 font-semibold text-gray-900">Proveedor</th>
+            <th class="px-6 py-3 font-semibold text-gray-900">
+              <span class="relative cursor-help border-b border-dotted">
+                Duración
+                <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-gray-900 text-white text-xs rounded shadow-lg text-center">
+                  {{ definitions['Session'] }}
+                </span>
+              </span>
+            </th>
+            <th class="px-6 py-3 font-semibold text-gray-900">Propósito</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100">
+          @for (cookie of filteredCookies; track cookie.name) {
+            <tr class="hover:bg-gray-50/50 transition-colors">
+              <td class="px-6 py-4 font-mono text-xs text-blue-600">{{ cookie.name }}</td>
+              <td class="px-6 py-4 text-gray-600">{{ cookie.provider }}</td>
+              <td class="px-6 py-4 text-gray-600">
+                <span class="inline-flex px-2 py-0.5 rounded text-xs bg-gray-100">
+                  {{ cookie.duration }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-gray-600">{{ cookie.purpose }}</td>
+            </tr>
+          }
+
+          @if (filteredCookies.length === 0) {
+            <tr>
+              <td colspan="4" class="px-6 py-8 text-center text-gray-500 italic">
+                No hay cookies en esta categoría actualmente.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

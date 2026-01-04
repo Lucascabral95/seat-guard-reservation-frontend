@@ -30,6 +30,10 @@ export const routes: Routes = [
       {
         path: "my-tickets",
         loadChildren: () => import('./features/my-tickets/my-tickets.routes'),
+      },
+      {
+        path: "legal",
+        loadChildren: () => import('./features/legal/legal.routes'),
       }
     ]
   },

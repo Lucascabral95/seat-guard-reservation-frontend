@@ -1,51 +1,80 @@
 import 'zone.js';
 import 'zone.js/testing';
 
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { Footer } from './footer';
+import FooterBrand from '../../../components/footer-oficial/footer-brand/footer-brand';
+import FooterLegal from '../../../components/footer-oficial/footer-legal/footer-legal';
+import FooterSocial from '../../../components/footer-oficial/footer-social/footer-social';
+import FooterBottom from '../../../components/footer-oficial/footer-bottom/footer-bottom';
 
 describe('Footer', () => {
+  let fixture: ComponentFixture<Footer>;
+  let component: Footer;
+  let element: HTMLElement;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Footer],
+      imports: [
+        RouterTestingModule, // 👈 CLAVE
+        Footer,
+        FooterBrand,
+        FooterLegal,
+        FooterSocial,
+        FooterBottom,
+      ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(Footer);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+    fixture.detectChanges();
   });
 
-  it('should create the footer component', () => {
-    const fixture = TestBed.createComponent(Footer);
-    expect(fixture.componentInstance).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
   it('should render footer element', () => {
-    const fixture = TestBed.createComponent(Footer);
-    fixture.detectChanges();
-
-    const element: HTMLElement = fixture.nativeElement;
     expect(element.querySelector('footer')).toBeTruthy();
   });
 
-  it('should render SeatGuard branding', () => {
-    const fixture = TestBed.createComponent(Footer);
-    fixture.detectChanges();
-
-    const element: HTMLElement = fixture.nativeElement;
-    expect(element.textContent).toContain('SeatGuard');
+  it('should render FooterBrand component', () => {
+    expect(
+      element.querySelector('component-footer-brand')
+    ).toBeTruthy();
   });
 
-  it('should render external links', () => {
-    const fixture = TestBed.createComponent(Footer);
-    fixture.detectChanges();
+  it('should render FooterLegal component', () => {
+    expect(
+      element.querySelector('component-footer-legal')
+    ).toBeTruthy();
+  });
 
-    const element: HTMLElement = fixture.nativeElement;
+  it('should render FooterSocial component', () => {
+    expect(
+      element.querySelector('component-footer-social')
+    ).toBeTruthy();
+  });
 
-    const links = Array.from(element.querySelectorAll('a')).map(
-      (a) => a.getAttribute('href')
+  it('should render FooterBottom component', () => {
+    expect(
+      element.querySelector('component-footer-bottom')
+    ).toBeTruthy();
+  });
+
+  it('should pass navigation list to FooterLegal', () => {
+    const footerLegalDebug = fixture.debugElement.query(
+      By.directive(FooterLegal)
     );
 
-    expect(links).toContain('https://www.linkedin.com/in/lucas-gast%C3%B3n-cabral/');
-    expect(links).toContain('https://github.com/Lucascabral95');
-    expect(links).toContain(
-      'https://portfolio-web-dev-git-main-lucascabral95s-projects.vercel.app/'
-    );
+    const footerLegalInstance =
+      footerLegalDebug.componentInstance as FooterLegal;
+
+    expect(footerLegalInstance.nav).toEqual(component.listNav);
+    expect(footerLegalInstance.nav.length).toBe(5);
   });
 });

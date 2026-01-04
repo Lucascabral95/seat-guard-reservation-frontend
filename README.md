@@ -114,6 +114,7 @@ seatguard-reservation-frontend/
 │   │   │   ├── checkout/             # Proceso de compra
 │   │   │   ├── my-tickets/           # Gestión de tickets del usuario
 │   │   │   └── seats/                # Selección de asientos
+│   │   │   └── legal/                # Términos, condiciones y políticas
 │   │   ├── shared/                   # Componentes y utilidades compartidas
 │   │   │   ├── layouts/              # Layouts principales
 │   │   │   ├── components/           # Componentes UI reutilizables

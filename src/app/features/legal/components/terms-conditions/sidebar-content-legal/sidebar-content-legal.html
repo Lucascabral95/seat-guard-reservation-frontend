@@ -1,0 +1,79 @@
+<div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+    <div class="flex flex-col lg:flex-row gap-12 relative">
+
+      <aside class="hidden lg:block w-64 shrink-0">
+        <div class="sticky" [class]="stickyTop">
+  <nav>
+    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+      {{ title }}
+    </h3>
+
+    <ul class="space-y-3 border-l-2 border-gray-100">
+      @for (section of sections; track section.id) {
+        <li>
+          <button
+            (click)="navigate.emit(section.id)"
+            class="text-sm text-gray-500 hover:text-blue-600 hover:border-blue-600
+                   -ml-[2px] border-l-2 border-transparent pl-4 py-1
+                   transition-all text-left w-full"
+          >
+            {{ section.title }}
+          </button>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  @if (showPrint) {
+    <div class="pt-6 border-t border-gray-100">
+      <button
+        (click)="print.emit()"
+        class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+      >
+        <ng-content select="[icon-print]"></ng-content>
+        Descargar / Imprimir
+      </button>
+    </div>
+  }
+</div>
+
+      </aside>
+
+      <div class="flex-1 max-w-3xl">
+        <div class="prose prose-gray max-w-none">
+          <p class="text-lg text-gray-600 mb-10 leading-relaxed">
+            Estos Términos y Condiciones ("Términos") rigen el uso de la plataforma SeatGuard y la compra de tickets para eventos a través de nuestros servicios. Al realizar una compra, usted declara ser mayor de edad y tener la capacidad legal para celebrar contratos vinculantes.
+          </p>
+
+          <div class="space-y-16">
+            @for (section of sections; track section.id) {
+              <section [id]="section.id" class="scroll-mt-28 group">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100 group-hover:border-gray-200 transition-colors">
+                  {{ section.title }}
+                </h2>
+                <div class="text-gray-600 leading-7 space-y-4 legal-content">
+                   @for (paragraph of section.content; track $index) {
+                     <p>{{ paragraph }}</p>
+                   }
+                </div>
+              </section>
+            }
+          </div>
+
+          <div class="mt-20 pt-10 border-t border-gray-200">
+            <h3 class="text-sm font-bold text-gray-900 uppercase mb-2">Contacto Legal</h3>
+            <p class="text-sm text-gray-500">
+              Si tiene dudas sobre estos términos, contacte a nuestro equipo legal:<br>
+              <a href="mailto:legal@seatguard.com" class="text-blue-600 hover:underline">legal&#64;seatguard.com</a>
+            </p>
+            <p class="text-sm text-gray-500 mt-4">
+              SeatGuard Inc.<br>
+              Av. Corrientes 1234, Piso 10<br>
+              Ciudad Autónoma de Buenos Aires, Argentina
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>

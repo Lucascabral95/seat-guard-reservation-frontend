@@ -1,0 +1,15 @@
+<div class="min-h-screen bg-white font-sans text-gray-900">
+
+  <!-- HERO SECTION -->
+  <component-hero-section-help />
+
+  <!-- QUICK TOPICS -->
+  <component-quick-topics [quickTopics]="quickTopics" />
+
+  <!-- FAQ ACORDEÓN -->
+  <component-faq-collapse [faqs]="faqs" (toggle)="toggleFaq($event)" />
+
+  <!-- CONTACTO -->
+  <component-contact />
+
+</div>

@@ -2,6 +2,7 @@ import 'zone.js';
 import 'zone.js/testing';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import BannerSponsor from './banner-sponsor';
 
 describe('BannerSponsor', () => {
@@ -10,7 +11,10 @@ describe('BannerSponsor', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BannerSponsor],
+      imports: [
+        RouterTestingModule,
+        BannerSponsor,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BannerSponsor);

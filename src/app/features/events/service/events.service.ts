@@ -67,23 +67,23 @@ export class EventsService {
 getEventsByFilter(filtersAccessor: () => FiltersEventsInterface | undefined) {
   return httpResource<Events[]>(() => {
 
-    // 1. Evitar ejecución en servidor (SSR) si no es necesaria
+    // 1. Evitar ejecución en servidor (SSR)
     if (!this.isBrowser) return undefined;
 
     const rawFilters = filtersAccessor();
 
-    // 2. Si no hay objeto de filtros, abortamos.
+    // 2. Si es undefined, cortamos inmediatamente.
     if (!rawFilters) return undefined;
 
-    // 3. LIMPIEZA DE DATOS (Sanitization)
-    // Creamos un objeto plano solo con los valores válidos.
+    // 3. Construcción manual y segura del objeto plano
     const queryParams: Record<string, string> = {};
 
-    if (rawFilters.name && rawFilters.name.trim().length >= 2) {
+    // Sanitización agresiva
+    if (rawFilters.name && typeof rawFilters.name === 'string' && rawFilters.name.trim().length >= 2) {
       queryParams['name'] = rawFilters.name.trim();
     }
 
-    if (rawFilters.location && rawFilters.location.trim().length >= 2) {
+    if (rawFilters.location && typeof rawFilters.location === 'string' && rawFilters.location.trim().length >= 2) {
       queryParams['location'] = rawFilters.location.trim();
     }
 
@@ -91,25 +91,27 @@ getEventsByFilter(filtersAccessor: () => FiltersEventsInterface | undefined) {
       queryParams['gender'] = rawFilters.gender;
     }
 
-    // 4. CHECK DE SEGURIDAD (La solución al bug)
-    // Si el objeto queryParams está vacío (0 claves), significa que no hay filtros válidos.
-    // Devolvemos undefined para que httpResource NO dispare la petición.
+    // 4. EL GUARDIÁN FINAL
+    // Si después de limpiar, el objeto está vacío, devolvemos undefined.
+    // Esto previene que Axios/HttpClient envíe una request sin params (lo que causa el "trae todo").
     if (Object.keys(queryParams).length === 0) {
       return undefined;
     }
 
-    console.log('Enviando petición con params:', queryParams); // Debug en consola prod
+    // Debug para ver qué está saliendo realmente en Vercel
+    console.log('[EventsService] Fetching with params:', queryParams);
 
     return {
       url: `${URL_BOOKING_SERVICE}/api/v1/events`,
       method: 'GET',
-      params: queryParams, // Angular serializa esto automáticamente
+      params: queryParams,
     };
 
   }, {
     defaultValue: [],
   });
 }
+
 
 
 

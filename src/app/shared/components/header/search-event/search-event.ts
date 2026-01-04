@@ -76,63 +76,63 @@ import { FiltersEventsInterface } from '../../../../features/events/interfaces';
 })
 export default class SearchEvent {
   private eventsService = inject(EventsService);
-  private elementRef = inject(ElementRef); // Necesario para detectar click inside
+  private elementRef = inject(ElementRef);
 
   searchText = signal('');
   searchLocation = signal('');
+
+  // Controlamos la visibilidad manualmente para evitar parpadeos
   visible = signal(false);
 
-  // Lógica de negocio reactiva
+  // Lógica de filtrado estricta
   filters = computed<FiltersEventsInterface | undefined>(() => {
     const name = this.searchText().trim();
     const location = this.searchLocation().trim();
 
-    // Si ambos están vacíos o muy cortos, retornamos undefined
-    // Esto hace que el signal "filters" sea undefined y el servicio aborte.
+    // Condición estricta: Si no hay mínimo 2 caracteres, es UNDEFINED.
     if (name.length < 2 && location.length < 2) {
       return undefined;
     }
 
-    return {
-      name: name.length >= 2 ? name : undefined,
-      location: location.length >= 2 ? location : undefined
-    };
+    // Construimos el objeto
+    const payload: FiltersEventsInterface = {};
+    if (name.length >= 2) payload.name = name;
+    if (location.length >= 2) payload.location = location;
+
+    return payload;
   });
 
-  // Pasamos la señal (sin ejecutarla aquí) al resource
+  // El resource reacciona al computed
   eventsResource = this.eventsService.getEventsByFilter(this.filters);
 
   // --- Handlers ---
 
   onInput(value: string) {
     this.searchText.set(value);
-    this.checkVisibility();
+    this.updateVisibility();
   }
 
   onLocationInput(value: string) {
     this.searchLocation.set(value);
-    this.checkVisibility();
+    this.updateVisibility();
   }
 
-  private checkVisibility() {
-    // Solo mostramos el dropdown si hay filtros válidos
-    this.visible.set(this.filters() !== undefined);
+  // Lógica centralizada de visibilidad
+  private updateVisibility() {
+    // Solo mostramos si hay filtros válidos
+    const hasFilters = this.filters() !== undefined;
+    this.visible.set(hasFilters);
   }
 
   closeResults() {
     this.visible.set(false);
   }
 
-  // --- Click Outside (Funcionalidad Preservada) ---
+  // Click Outside
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
-    // Si ya está cerrado, no hacemos nada
     if (!this.visible()) return;
-
-    // Verificamos si el clic fue DENTRO del componente
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
-
-    // Si fue afuera, cerramos
     if (!clickedInside) {
       this.closeResults();
     }

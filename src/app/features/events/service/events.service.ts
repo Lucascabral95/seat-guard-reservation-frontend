@@ -36,23 +36,52 @@ export class EventsService {
 
   readonly totalEvents = computed(() => this.eventsSignal().length)
 
-  getEventsByFilter(filtersSignal: () => FiltersEventsInterface | undefined) {
+//   getEventsByFilter(filtersSignal: () => FiltersEventsInterface | undefined) {
+//   return httpResource<Events[]>(() => {
+
+//     if (!this.isBrowser) {
+//       return undefined;
+//     }
+
+//     const filters = filtersSignal();
+
+//     if (!filters || Object.keys(filters).length === 0) {
+//       return undefined;
+//     }
+
+//     let params = new HttpParams();
+//     if (filters.gender) params = params.set('gender', filters.gender);
+//     if (filters.name) params = params.set('name', filters.name);
+//     if (filters.location) params = params.set('location', filters.location);
+
+//     return {
+//       url: `${URL_BOOKING_SERVICE}/api/v1/events`,
+//       method: 'GET',
+//       params,
+//     };
+
+//   }, {
+//     defaultValue: [],
+//   });
+// }
+getEventsByFilter(filtersAccessor: () => FiltersEventsInterface | undefined) {
   return httpResource<Events[]>(() => {
 
-    if (!this.isBrowser) {
-      return undefined;
-    }
+    if (!this.isBrowser) return undefined;
 
-    const filters = filtersSignal();
-
-    if (!filters || Object.keys(filters).length === 0) {
-      return undefined;
-    }
-
+    const filters = filtersAccessor();
+    if (!filters) return undefined;
     let params = new HttpParams();
-    if (filters.gender) params = params.set('gender', filters.gender);
-    if (filters.name) params = params.set('name', filters.name);
-    if (filters.location) params = params.set('location', filters.location);
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value.toString().trim() !== '') {
+        params = params.set(key, value.toString());
+      }
+    });
+
+    if (params.keys().length === 0) {
+      return undefined;
+    }
 
     return {
       url: `${URL_BOOKING_SERVICE}/api/v1/events`,
@@ -64,6 +93,7 @@ export class EventsService {
     defaultValue: [],
   });
 }
+
 
 getEvents(limit?: number) {
   return httpResource<Events[]>(() => {

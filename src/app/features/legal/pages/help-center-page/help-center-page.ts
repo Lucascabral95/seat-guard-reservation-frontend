@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FAQ, QuickTopic } from '../../interfaces/components';
 import QuickTopics from '../../components/help-center/quick-topics/quick-topics';
 import Contact from '../../components/help-center/contact/contact';
 import FaqCollapse from '../../components/help-center/faq-collapse/faq-collapse';
 import HeroSectionHelp from '../../components/help-center/hero-section-help/hero-section-help';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-help-center-page',
@@ -12,7 +13,18 @@ import HeroSectionHelp from '../../components/help-center/hero-section-help/hero
   templateUrl: './help-center-page.html',
   styleUrl: './help-center-page.scss',
 })
-export default class HelpCenterPage {
+export default class HelpCenterPage implements OnInit {
+    private seo = inject(SeoService);
+
+     ngOnInit(): void {
+    this.seo.setPageMeta({
+      title: 'Centro de Ayuda',
+      description:
+        'Encontrá respuestas sobre tickets, pagos, seguridad y eventos. Estamos para ayudarte en cada paso.',
+      noIndex: true,
+    });
+  }
+
    quickTopics: QuickTopic[] = [
     { icon: 'ticket', title: 'Mis Tickets', desc: 'Accesos a PDF y descargas.' },
     { icon: 'credit-card', title: 'Pagos', desc: 'Facturación y Stripe.' },

@@ -4,20 +4,22 @@ import { EventsService } from '../../service/events.service';
 
 @Component({
   selector: 'component-spotlight',
+  standalone: true,
   imports: [RouterLink],
   templateUrl: './spotlight.html',
   styleUrl: './spotlight.scss',
 })
 export default class Spotlight {
-    eventService = inject(EventsService)
-    name = 'Dua Lipa';
+  private eventsService = inject(EventsService);
 
-eventsResource = this.eventService.getEventsByFilter(() => ({
-  name: this.name,
-}));
+  readonly artistName = 'Dua Lipa';
 
-eventSelected = computed(() => {
-  const events = this.eventsResource.value();
-  return events?.[0] ?? null;
-});
+  readonly eventsResource = this.eventsService.getEventsByFilter(() => ({
+    name: this.artistName,
+  }));
+
+  readonly eventSelected = computed(() => {
+    const events = this.eventsResource.value();
+    return events.length > 0 ? events[0] : null;
+  });
 }

@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { LegalSection } from '../../interfaces/components';
 import SidebarContentLegal from '../../components/terms-conditions/sidebar-content-legal/sidebar-content-legal';
 import HeaderMinimalist from '../../components/terms-conditions/header-minimalist/header-minimalist';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-terms-conditions-page',
@@ -10,8 +11,18 @@ import HeaderMinimalist from '../../components/terms-conditions/header-minimalis
   templateUrl: './terms-conditions-page.html',
   styleUrl: './terms-conditions-page.scss',
 })
-export default class TermsConditionsPage {
-lastUpdated = signal<Date>(new Date());
+export default class TermsConditionsPage implements OnInit {
+  private seo = inject(SeoService);
+
+  lastUpdated = signal<Date>(new Date());
+
+  ngOnInit(): void {
+    this.seo.setPageMeta({
+      title: 'Términos y Condiciones - SeatGuard',
+      description: 'Términos y condiciones de uso de la plataforma SeatGuard para reserva de entradas en tiempo real.',
+      noIndex: false
+    });
+  }
 
   sections: LegalSection[] = [
     {

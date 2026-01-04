@@ -61,7 +61,7 @@
 //   }
 // }
 
-import { Component, computed, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, signal, effect, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import SearchEventsComponent from '../list-categories/search-event/search-events-component/search-events-component';
 import { EventsService } from '../../../../features/events/service/events.service';
@@ -76,59 +76,69 @@ import { FiltersEventsInterface } from '../../../../features/events/interfaces';
 })
 export default class SearchEvent {
   private eventsService = inject(EventsService);
-  private elementRef = inject(ElementRef);
+  private elementRef = inject(ElementRef); // Necesario para detectar click inside
 
+  // Inputs del usuario
   searchText = signal('');
   searchLocation = signal('');
 
-  // Controlamos la visibilidad manualmente para evitar parpadeos
+  // Visibilidad del dropdown
   visible = signal(false);
 
-  // Lógica de filtrado estricta
-  filters = computed<FiltersEventsInterface | undefined>(() => {
-    const name = this.searchText().trim();
-    const location = this.searchLocation().trim();
+  // 1. CAMBIO CLAVE: Usamos un signal dedicado para los filtros activos
+  // Lo inicializamos en undefined para que el servicio NO haga nada al inicio.
+  activeFilters = signal<FiltersEventsInterface | undefined>(undefined);
 
-    // Condición estricta: Si no hay mínimo 2 caracteres, es UNDEFINED.
-    if (name.length < 2 && location.length < 2) {
-      return undefined;
-    }
+  // 2. Resource conectado al signal 'activeFilters' en lugar de un computed directo
+  eventsResource = this.eventsService.getEventsByFilter(this.activeFilters);
 
-    // Construimos el objeto
-    const payload: FiltersEventsInterface = {};
-    if (name.length >= 2) payload.name = name;
-    if (location.length >= 2) payload.location = location;
+  constructor() {
+    // 3. EFFECT: El puente seguro.
+    // Esto corre asíncronamente. En SSR no afectará el estado inicial crítico.
+    // En el cliente, asegura que los filtros se actualicen solo ante cambios reales.
+    effect(() => {
+      const name = this.searchText().trim();
+      const location = this.searchLocation().trim();
 
-    return payload;
-  });
+      // Lógica de negocio: Si no cumple el largo mínimo, "apagamos" los filtros.
+      if (name.length < 2 && location.length < 2) {
+        // untracked es opcional pero buena práctica aquí para evitar loops,
+        // aunque con set directo no suele pasar.
+        this.activeFilters.set(undefined);
+        return;
+      }
 
-  // El resource reacciona al computed
-  eventsResource = this.eventsService.getEventsByFilter(this.filters);
+      // Si cumple, seteamos el objeto.
+      this.activeFilters.set({
+        name: name.length >= 2 ? name : undefined,
+        location: location.length >= 2 ? location : undefined
+      });
+    }, { allowSignalWrites: true });
+  }
 
-  // --- Handlers ---
+  // --- Handlers (Solo actualizan los inputs visuales) ---
 
   onInput(value: string) {
     this.searchText.set(value);
-    this.updateVisibility();
+    this.checkVisibility();
   }
 
   onLocationInput(value: string) {
     this.searchLocation.set(value);
-    this.updateVisibility();
+    this.checkVisibility();
   }
 
-  // Lógica centralizada de visibilidad
-  private updateVisibility() {
-    // Solo mostramos si hay filtros válidos
-    const hasFilters = this.filters() !== undefined;
-    this.visible.set(hasFilters);
+  private checkVisibility() {
+    // La visibilidad depende de si el usuario ha escrito algo válido
+    const hasInput = this.searchText().length >= 2 || this.searchLocation().length >= 2;
+    this.visible.set(hasInput);
   }
 
   closeResults() {
     this.visible.set(false);
   }
 
-  // Click Outside
+  // --- Click Outside ---
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     if (!this.visible()) return;

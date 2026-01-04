@@ -2,7 +2,10 @@ import 'zone.js';
 import 'zone.js/testing';
 
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { PLATFORM_ID } from '@angular/core';
 import { CheckoutService } from './checkout.service';
 
@@ -41,7 +44,9 @@ describe('CheckoutService', () => {
       req.url.includes('/stripe/create/checkout/session')
     );
 
+    expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(payload);
+
     req.flush({});
   });
 
@@ -54,6 +59,10 @@ describe('CheckoutService', () => {
       req.method === 'POST' &&
       req.url.includes('/checkouts')
     );
+
+    // ✅ EXPECTACIÓN QUE FALTABA
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(payload);
 
     req.flush({});
   });

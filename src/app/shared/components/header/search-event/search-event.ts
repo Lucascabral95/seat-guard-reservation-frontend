@@ -63,9 +63,9 @@
 
 import { Component, computed, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import SearchEventsComponent from '../list-categories/search-event/search-events-component/search-events-component';
 import { EventsService } from '../../../../features/events/service/events.service';
 import { FiltersEventsInterface } from '../../../../features/events/interfaces';
-import SearchEventsComponent from '../list-categories/search-event/search-events-component/search-events-component';
 
 @Component({
   selector: 'header-search-event',
@@ -76,36 +76,34 @@ import SearchEventsComponent from '../list-categories/search-event/search-events
 })
 export default class SearchEvent {
   private eventsService = inject(EventsService);
-  // Inyectamos ElementRef para saber si el clic fue dentro de ESTE componente
-  private elementRef = inject(ElementRef);
+  private elementRef = inject(ElementRef); // Necesario para detectar click inside
 
   searchText = signal('');
   searchLocation = signal('');
   visible = signal(false);
 
-  // Computed optimizado (Lógica de negocio pura)
+  // Lógica de negocio reactiva
   filters = computed<FiltersEventsInterface | undefined>(() => {
     const name = this.searchText().trim();
     const location = this.searchLocation().trim();
 
-    // Regla: Al menos 2 caracteres en alguno de los inputs
-    const hasMinLength = name.length >= 2 || location.length >= 2;
-
-    if (!hasMinLength) {
+    // Si ambos están vacíos o muy cortos, retornamos undefined
+    // Esto hace que el signal "filters" sea undefined y el servicio aborte.
+    if (name.length < 2 && location.length < 2) {
       return undefined;
     }
 
-    const filtersPayload: FiltersEventsInterface = {};
-    if (name.length >= 2) filtersPayload.name = name;
-    if (location.length >= 2) filtersPayload.location = location;
-
-    return filtersPayload;
+    return {
+      name: name.length >= 2 ? name : undefined,
+      location: location.length >= 2 ? location : undefined
+    };
   });
 
-  // Resource conectado a la señal computada
+  // Pasamos la señal (sin ejecutarla aquí) al resource
   eventsResource = this.eventsService.getEventsByFilter(this.filters);
 
-  // --- Handlers de Inputs ---
+  // --- Handlers ---
+
   onInput(value: string) {
     this.searchText.set(value);
     this.checkVisibility();
@@ -117,6 +115,7 @@ export default class SearchEvent {
   }
 
   private checkVisibility() {
+    // Solo mostramos el dropdown si hay filtros válidos
     this.visible.set(this.filters() !== undefined);
   }
 
@@ -124,16 +123,16 @@ export default class SearchEvent {
     this.visible.set(false);
   }
 
-  // --- Click Outside Logic ---
-
+  // --- Click Outside (Funcionalidad Preservada) ---
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
-    // Si el componente no está visible, no gastamos cpu calculando nada
+    // Si ya está cerrado, no hacemos nada
     if (!this.visible()) return;
 
+    // Verificamos si el clic fue DENTRO del componente
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
 
-    // Si el clic NO fue dentro de este componente, cerramos los resultados
+    // Si fue afuera, cerramos
     if (!clickedInside) {
       this.closeResults();
     }

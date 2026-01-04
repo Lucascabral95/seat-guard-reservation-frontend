@@ -67,32 +67,50 @@ export class EventsService {
 getEventsByFilter(filtersAccessor: () => FiltersEventsInterface | undefined) {
   return httpResource<Events[]>(() => {
 
+    // 1. Evitar ejecución en servidor (SSR) si no es necesaria
     if (!this.isBrowser) return undefined;
 
-    const filters = filtersAccessor();
-    if (!filters) return undefined;
-    let params = new HttpParams();
+    const rawFilters = filtersAccessor();
 
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value && value.toString().trim() !== '') {
-        params = params.set(key, value.toString());
-      }
-    });
+    // 2. Si no hay objeto de filtros, abortamos.
+    if (!rawFilters) return undefined;
 
-    if (params.keys().length === 0) {
+    // 3. LIMPIEZA DE DATOS (Sanitization)
+    // Creamos un objeto plano solo con los valores válidos.
+    const queryParams: Record<string, string> = {};
+
+    if (rawFilters.name && rawFilters.name.trim().length >= 2) {
+      queryParams['name'] = rawFilters.name.trim();
+    }
+
+    if (rawFilters.location && rawFilters.location.trim().length >= 2) {
+      queryParams['location'] = rawFilters.location.trim();
+    }
+
+    if (rawFilters.gender) {
+      queryParams['gender'] = rawFilters.gender;
+    }
+
+    // 4. CHECK DE SEGURIDAD (La solución al bug)
+    // Si el objeto queryParams está vacío (0 claves), significa que no hay filtros válidos.
+    // Devolvemos undefined para que httpResource NO dispare la petición.
+    if (Object.keys(queryParams).length === 0) {
       return undefined;
     }
+
+    console.log('Enviando petición con params:', queryParams); // Debug en consola prod
 
     return {
       url: `${URL_BOOKING_SERVICE}/api/v1/events`,
       method: 'GET',
-      params,
+      params: queryParams, // Angular serializa esto automáticamente
     };
 
   }, {
     defaultValue: [],
   });
 }
+
 
 
 getEvents(limit?: number) {

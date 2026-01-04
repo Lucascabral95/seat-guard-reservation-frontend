@@ -6,6 +6,14 @@ import EventList from './events';
 import { EventsService } from '../../service/events.service';
 import { provideRouter } from '@angular/router';
 import { createResourceMock } from '../../../../shared/testing/testing-utils';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'component-spotlight',
+  standalone: true,
+  template: '',
+})
+class SpotlightStub {}
 
 describe('EventList', () => {
   let serviceMock: any;
@@ -16,13 +24,27 @@ describe('EventList', () => {
       getEventsByFilter: jasmine.createSpy().and.returnValue(createResourceMock()),
     };
 
-    await TestBed.configureTestingModule({
-      imports: [EventList],
-      providers: [
-        provideRouter([]),
-        { provide: EventsService, useValue: serviceMock },
-      ],
-    }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [EventList],
+        providers: [
+          provideRouter([]),
+          { provide: EventsService, useValue: serviceMock },
+        ],
+      })
+      .overrideComponent(EventList, {
+        remove: {
+          imports: [
+            (await import('../../components/spotlight/spotlight')).default,
+          ],
+        },
+        add: {
+          imports: [
+            SpotlightStub,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   it('should create the page', () => {

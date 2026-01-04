@@ -1,33 +1,34 @@
 <div>
-    <section>
-      <app-home-page></app-home-page>
-    </section>
+  <!-- GRID PRINCIPAL -->
+  <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+    <component-event-grid [eventsResource]="eventsResource" />
+  </section>
 
-     <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
-      <component-event-grid
-        [eventsResource]="eventsResource"
-      />
-    </section>
+  <!-- COLLECTIONS / MOODS -->
+  <component-container-card />
 
-    <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
-     <component-event-carousel
-      title="Pop"
-      [gender]="firstGenderEvents"
-     />
-    </section>
+  <!-- CAROUSEL VARIOS -->
+  <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+    <component-event-carousel title="Varios" [gender]="firstGenderEvents" />
+  </section>
 
-    <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
-     <component-event-carousel
-      title="Rock"
-      [gender]="secondGender"
-     />
-    </section>
+  <!-- SPOTLIGHT -->
+  <component-spotlight />
 
-    <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
-     <component-event-carousel
-      title="Jazz"
-      [gender]="thirdGender"
-     />
-    </section>
+  <!-- CAROUSEL ROCK -->
+  <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+    <component-event-carousel title="Rock" [gender]="secondGender" />
+  </section>
+
+  <!-- BANNER SPONSOR "ENTERPRISE" -->
+  <component-banner-sponsor />
+
+  <!-- CAROUSEL POP -->
+  <section class="w-full px-4 md:px-8 mt-8 pb-12 bg-white">
+    <component-event-carousel title="Pop" [gender]="thirdGender" />
+  </section>
+
+  <!-- APP DOWNLOAD (RESPONSIVE & COMING SOON) -->
+  <component-download-coming-soon />
 
 </div>

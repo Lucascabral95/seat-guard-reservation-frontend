@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpParams } from '@angular/common/http';
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -22,11 +22,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     if (
       environment.production &&
-      url.startsWith('http://') &&
+      (url.startsWith('http://') || url.startsWith('https://')) &&
       !url.includes('localhost') &&
-      !url.includes('127.0.0.1')
+      !url.includes('127.0.0.1') &&
+      !url.startsWith('/proxy')
     ) {
-      url = `/proxy?target=${encodeURIComponent(url)}`;
+      const target = req.urlWithParams;
+      url = `/proxy?target=${encodeURIComponent(target)}`;
     }
   }
 
@@ -34,6 +36,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     req.clone({
       url,
       headers,
+      params: url.startsWith('/proxy') ? new HttpParams() : req.params,
     })
   );
 };

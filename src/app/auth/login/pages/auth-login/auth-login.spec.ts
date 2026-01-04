@@ -22,10 +22,9 @@ describe('AuthLogin (safe)', () => {
         { provide: AuthLoginService, useValue: authServiceMock },
       ],
     })
-      // 🚨 ESTO ES LA CLAVE
       .overrideComponent(AuthLogin, {
         set: {
-          template: '', // ❌ NO RouterLink, NO ActivatedRoute
+          template: '',
         },
       })
       .compileComponents();

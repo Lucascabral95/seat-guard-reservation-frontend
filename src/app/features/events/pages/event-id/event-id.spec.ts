@@ -42,8 +42,6 @@ describe('EventId', () => {
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
-    // Asegúrate que tu componente realmente tenga un elemento con esta clase
-    // o el test fallará si el HTML no coincide.
     expect(el.innerHTML).toContain('animate-pulse');
   });
 

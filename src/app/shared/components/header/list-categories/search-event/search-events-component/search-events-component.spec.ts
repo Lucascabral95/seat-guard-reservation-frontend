@@ -6,8 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import SearchEventsComponent from './search-events-component';
 
-/* ===== Mock de resource ===== */
-
 function createResourceMock(options: {
   loading?: boolean;
   value?: any[];
@@ -22,7 +20,7 @@ describe('SearchEventsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule, // RouterLink sin router real
+        RouterTestingModule,
         SearchEventsComponent,
       ],
     }).compileComponents();

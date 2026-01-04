@@ -1,4 +1,4 @@
-<div class="bg-gray-100">
+<!-- <div class="bg-gray-100">
 
   <component-utility-bar [categories]="headerService.categories()" />
 
@@ -18,4 +18,31 @@
 
     <header-search-event />
   </div>
+</div> -->
+<div class="bg-[#026cdf] text-white px-4 md:px-8 pt-4 pb-16 relative shadow-md">
+
+  <component-nav-bar
+    [authenticated]="authenticated"
+    [genders]="headerService.genders()"
+    (logout)="logout()"
+    (goToLogin)="goToLogin()"
+    (toggleMenu)="toggleMenu()"
+  />
+
+  @if (isMenuOpen) {
+    <component-menu-open [authenticated]="authenticated" [headerService]="headerService" />
+  }
+
+  <!-- SOLUCIÓN NUCLEAR AQUÍ -->
+  <!--
+       @defer (on browser) asegura que este bloque SOLO se renderice en el cliente.
+       El servidor (SSR/Vercel) verá el @placeholder y NO ejecutará SearchEvent.
+  -->
+  @defer (on viewport) {
+     <header-search-event />
+  } @placeholder {
+     <!-- Un div vacío o un esqueleto visual del mismo tamaño para evitar saltos (CLS) -->
+     <div class="h-12 w-full bg-white/20 rounded animate-pulse"></div>
+  }
+
 </div>

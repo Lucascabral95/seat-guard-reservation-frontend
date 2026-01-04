@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PolicySection } from '../../interfaces/components';
 import HeroSection from '../../components/privacy-policy/hero-section/hero-section';
 import LegalContent from '../../components/privacy-policy/legal-content/legal-content';
 import VisualSummary from '../../components/privacy-policy/visual-summary/visual-summary';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-privacy-policy-page',
@@ -11,8 +12,18 @@ import VisualSummary from '../../components/privacy-policy/visual-summary/visual
   templateUrl: './privacy-policy-page.html',
   styleUrl: './privacy-policy-page.scss',
 })
-export default class PrivacyPolicyPage {
+export default class PrivacyPolicyPage implements OnInit {
   lastUpdated = new Date();
+  private seo = inject(SeoService);
+
+  ngOnInit(): void {
+    this.seo.setPageMeta({
+      title: 'Política de Privacidad',
+      description:
+        'Conocé cómo SeatGuard protege tus datos personales, pagos y transacciones de forma segura.',
+      noIndex: true,
+    });
+  }
 
   policySections: PolicySection[] = [
     {

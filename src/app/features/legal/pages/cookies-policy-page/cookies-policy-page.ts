@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CookieType } from '../../interfaces/components';
 import CookiesAuditory from '../../components/cookies-policy/cookies-auditory/cookies-auditory';
 import ManagementCookies from '../../components/cookies-policy/management-cookies/management-cookies';
 import HeaderCookies from '../../components/cookies-policy/header-cookies/header-cookies';
 import ExplanatorySection from '../../components/cookies-policy/explanatory-section/explanatory-section';
+import { SeoService } from '../../../../core/services/seo.service';
 
 @Component({
   selector: 'app-cookies-policy-page',
@@ -12,8 +13,17 @@ import ExplanatorySection from '../../components/cookies-policy/explanatory-sect
   templateUrl: './cookies-policy-page.html',
   styleUrl: './cookies-policy-page.scss',
 })
-export default class CookiesPolicyPage {
+export default class CookiesPolicyPage implements OnInit {
 lastUpdated = signal(new Date());
+private seo = inject(SeoService);
+
+  ngOnInit() {
+    this.seo.setPageMeta({
+      title: 'Política de Cookies',
+      description: 'Conoce nuestra política de cookies y cómo utilizamos las tecnologías de rastreo en nuestro sitio web.',
+      noIndex: false
+    });
+  }
 
   definitions: Record<string, string> = {
     'Session': 'Se eliminan automáticamente cuando cierras el navegador.',

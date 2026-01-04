@@ -45,15 +45,19 @@ export class EventsService {
 
     const filters = filtersSignal();
 
+    if (!filters || Object.keys(filters).length === 0) {
+      return undefined;
+    }
+
     let params = new HttpParams();
-    if (filters?.gender) params = params.set('gender', filters.gender);
-    if (filters?.name) params = params.set('name', filters.name);
-    if (filters?.location) params = params.set('location', filters.location);
+    if (filters.gender) params = params.set('gender', filters.gender);
+    if (filters.name) params = params.set('name', filters.name);
+    if (filters.location) params = params.set('location', filters.location);
 
     return {
       url: `${URL_BOOKING_SERVICE}/api/v1/events`,
       method: 'GET',
-      params
+      params,
     };
 
   }, {
